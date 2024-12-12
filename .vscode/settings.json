@@ -2,6 +2,11 @@
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ]
+        "lib/**/*.jar",  // Your existing libraries
+        "C:/Users/dell store/Desktop/javafx-sdk-23.0.1/lib/*.jar"  // JavaFX SDK path
+    ],
+    "files.exclude": {
+    "**/*.class": true
+}
+
 }
