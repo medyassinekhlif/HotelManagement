@@ -1,6 +1,9 @@
+package Room;
 import java.sql.*; 
 import java.util.ArrayList;
 import java.util.List;
+
+import Utils.DbConnection;
 
 public class RoomDAL {
     public static void addRoom(Room room) throws SQLException {

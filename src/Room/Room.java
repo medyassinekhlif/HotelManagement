@@ -1,4 +1,4 @@
-import java.sql.*;
+package Room;
 
 public class Room {
     // Room types

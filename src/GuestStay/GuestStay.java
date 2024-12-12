@@ -1,4 +1,7 @@
+package GuestStay;
 import java.util.Date;
+
+import Room.Room;
 
 public class GuestStay {
 
@@ -15,6 +18,7 @@ public class GuestStay {
     private int nightsSpent;
     private double amountToPay;
 
+    // Constructor
     public GuestStay(String idInfo, Date dateOfBirth, String fullName, String contactInfo, String address,
                      int guestId, int bookerId, Room.RoomType roomType, Date dateIn, Date dateOut) {
         this.idInfo = idInfo;
@@ -27,49 +31,52 @@ public class GuestStay {
         this.roomType = roomType;
         this.dateIn = dateIn;
         this.dateOut = dateOut;
+        recalculateFields(); // Initialize dependent fields
+    }
+
+
+    // Recalculate nights spent and amount to pay
+    public void recalculateFields() {
         this.nightsSpent = calculateNightsSpent();
         this.amountToPay = calculateAmountToPay();
     }
 
-    private int calculateNightsSpent() {
+    // Calculate nights spent
+    public int calculateNightsSpent() {
+        if (dateIn == null || dateOut == null) {
+            return 0; // Default to 0 if dates are invalid
+        }
         long diff = dateOut.getTime() - dateIn.getTime();
         return (int) (diff / (1000 * 60 * 60 * 24));
     }
 
-    private double calculateAmountToPay() {
+    // Calculate amount to pay
+    public double calculateAmountToPay() {
         double basePrice = nightsSpent * getRoomPrice();
 
         // Apply discount based on age
-        long ageInMs = new Date().getTime() - dateOfBirth.getTime();
-        int age = (int) (ageInMs / (365.25 * 24 * 60 * 60 * 1000));
-        if (age >= 65) {
-            return basePrice * 0.9; 
-        } else {
-            return basePrice;
+        if (dateOfBirth != null) {
+            long ageInMs = new Date().getTime() - dateOfBirth.getTime();
+            int age = (int) (ageInMs / (365.25 * 24 * 60 * 60 * 1000));
+            if (age >= 65) {
+                return basePrice * 0.9; // 10% discount for seniors
+            }
         }
+        return basePrice;
     }
 
+    // Get room price based on type
     private double getRoomPrice() {
-        // Price per night for a specific room type can be set based on RoomType.
         switch (roomType) {
-            case S1:
-                return 100;
-            case S2:
-                return 120;
-            case D1:
-                return 150;
-            case D2:
-                return 170;
-            case E1:
-                return 200;
-            case E2:
-                return 220;
-            case F3:
-                return 300;
-            case F4:
-                return 350;
-            default:
-                return 0;
+            case S1: return 100;
+            case S2: return 120;
+            case D1: return 150;
+            case D2: return 170;
+            case E1: return 200;
+            case E2: return 220;
+            case F3: return 300;
+            case F4: return 350;
+            default: return 0;
         }
     }
 
@@ -89,7 +96,7 @@ public class GuestStay {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-        this.amountToPay = calculateAmountToPay();  // Recalculate amountToPay when dateOfBirth changes
+        recalculateFields(); // Update dependent fields
     }
 
     public String getFullName() {
@@ -138,7 +145,7 @@ public class GuestStay {
 
     public void setRoomType(Room.RoomType roomType) {
         this.roomType = roomType;
-        this.amountToPay = calculateAmountToPay();  // Recalculate amountToPay when roomType changes
+        recalculateFields(); // Update dependent fields
     }
 
     public Date getDateIn() {
@@ -147,8 +154,7 @@ public class GuestStay {
 
     public void setDateIn(Date dateIn) {
         this.dateIn = dateIn;
-        this.nightsSpent = calculateNightsSpent();  // Recalculate nightsSpent when dateIn changes
-        this.amountToPay = calculateAmountToPay();  // Recalculate amountToPay when dateIn changes
+        recalculateFields(); // Update dependent fields
     }
 
     public Date getDateOut() {
@@ -157,28 +163,18 @@ public class GuestStay {
 
     public void setDateOut(Date dateOut) {
         this.dateOut = dateOut;
-        this.nightsSpent = calculateNightsSpent();  // Recalculate nightsSpent when dateOut changes
-        this.amountToPay = calculateAmountToPay();  // Recalculate amountToPay when dateOut changes
+        recalculateFields(); // Update dependent fields
     }
 
     public int getNightsSpent() {
         return nightsSpent;
     }
 
-    public void setNightsSpent(int nightsSpent) {
-        this.nightsSpent = nightsSpent;
-        this.amountToPay = calculateAmountToPay();  // Recalculate amountToPay when nightsSpent changes
-    }
-
     public double getAmountToPay() {
         return amountToPay;
     }
 
-    public void setAmountToPay(double amountToPay) {
-        this.amountToPay = amountToPay;
-    }
-
-    // Override toString for privacy and better display of information
+    // Override toString for better display of information
     @Override
     public String toString() {
         return "Guest ID: " + guestId + ", Booker ID: " + bookerId + ", Room Type: " + roomType +

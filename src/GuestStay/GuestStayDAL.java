@@ -1,27 +1,43 @@
+package GuestStay;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import Room.Room;
+import Utils.DbConnection;
+
 public class GuestStayDAL {
     public static void addGuestStay(GuestStay guestStay) throws SQLException {
-        String query = "INSERT INTO guest_stays (idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId, roomType, dateIn, dateOut, nightsSpent, amountToPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Recalculate nightsSpent and amountToPay
+        guestStay.recalculateFields(); 
+        
+        String query = "INSERT INTO gueststays (idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId, roomType, dateIn, dateOut, nightsSpent, amountToPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            // Setting values for each placeholder in the query
             ps.setString(1, guestStay.getIdInfo());
-            ps.setDate(2, new java.sql.Date(guestStay.getDateOfBirth().getTime()));
+            ps.setDate(2, java.sql.Date.valueOf(guestStay.getDateOfBirth().toString()));
             ps.setString(3, guestStay.getFullName());
             ps.setString(4, guestStay.getContactInfo());
             ps.setString(5, guestStay.getAddress());
             ps.setInt(6, guestStay.getGuestId());
             ps.setInt(7, guestStay.getBookerId());
-            ps.setString(8, guestStay.getRoomType().name());
-            ps.setDate(9, new java.sql.Date(guestStay.getDateIn().getTime()));
-            ps.setDate(10, new java.sql.Date(guestStay.getDateOut().getTime()));
-            ps.setInt(11, guestStay.getNightsSpent()); // Nights spent
-            ps.setDouble(12, guestStay.getAmountToPay()); // Amount to pay
+            ps.setString(8, guestStay.getRoomType().name()); // Assuming roomType is an enum
+            ps.setDate(9, java.sql.Date.valueOf(guestStay.getDateIn().toString()));
+            ps.setDate(10, java.sql.Date.valueOf(guestStay.getDateOut().toString()));
+            
+            // Nights spent and amount to pay should already be set correctly after recalculating
+            ps.setInt(11, guestStay.getNightsSpent());
+            ps.setDouble(12, guestStay.getAmountToPay());
+    
+            // Execute the query
             ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Database Error: " + e.getMessage());
+            throw e;  // Rethrow the exception to handle it at a higher level
         }
     }
-    
+
     public static List<GuestStay> getGuestStays() throws SQLException {
         List<GuestStay> guestStays = new ArrayList<>();
         String query = "SELECT * FROM guestStays";
@@ -37,8 +53,8 @@ public class GuestStayDAL {
                 Room.RoomType roomType = Room.RoomType.valueOf(rs.getString("roomType"));
                 Date dateIn = rs.getDate("dateIn");
                 Date dateOut = rs.getDate("dateOut");
-                // int nightsSpent = rs.getInt("nightsSpent");
-                // double amountToPay = rs.getDouble("amountToPay");
+                int nightsSpent = rs.getInt("nightsSpent");
+                double amountToPay = rs.getDouble("amountToPay");
                 guestStays.add(new GuestStay(idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId, roomType, dateIn, dateOut));
             }
         }
