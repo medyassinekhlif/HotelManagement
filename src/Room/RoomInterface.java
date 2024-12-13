@@ -34,11 +34,11 @@ public class RoomInterface {
             }
         }
     }
-    
+
     public void addRoom(Scanner scanner) throws SQLException {
         System.out.print("Enter Room ID: ");
         String id = scanner.nextLine();
-        System.out.print("Enter Room Type (SINGLE/DOUBLE/SUITE): ");
+        System.out.print("Enter Room Type (S1/S2/D1/D2/E1/E2/F3/F4): ");
         Room.RoomType roomType = parseRoomType(scanner);
         int numberOfRooms = parseIntInput(scanner, "Enter Number of Rooms: ");
         System.out.print("Enter Price Per Night: ");
@@ -54,7 +54,7 @@ public class RoomInterface {
     public void updateRoom(Scanner scanner) throws SQLException {
         System.out.print("Enter Room ID to update: ");
         String roomId = scanner.nextLine();
-        System.out.print("Enter Updated Room Type (SINGLE/DOUBLE/SUITE): ");
+        System.out.print("Enter Room Type (S1/S2/D1/D2/E1/E2/F3/F4): ");
         Room.RoomType roomType = parseRoomType(scanner);
         int numberOfRooms = parseIntInput(scanner, "Enter Updated Number of Rooms: ");
         System.out.print("Enter Updated Price Per Night: ");

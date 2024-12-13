@@ -1,6 +1,6 @@
 package GuestStay;
-import java.util.Date;
 
+import java.util.Date;
 import Room.Room;
 
 public class GuestStay {
@@ -12,7 +12,7 @@ public class GuestStay {
     private String address;
     private int guestId;
     private int bookerId;
-    private Room.RoomType roomType;
+    private Room.RoomType roomType;  // RoomType instead of Room
     private Date dateIn;
     private Date dateOut;
     private int nightsSpent;
@@ -33,7 +33,6 @@ public class GuestStay {
         this.dateOut = dateOut;
         recalculateFields(); // Initialize dependent fields
     }
-
 
     // Recalculate nights spent and amount to pay
     public void recalculateFields() {
