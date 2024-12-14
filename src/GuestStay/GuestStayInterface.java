@@ -1,82 +1,147 @@
 package GuestStay;
 
-import java.sql.SQLException;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import Room.Room;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
-import Room.Room;
 
-public class GuestStayInterface {
+public class GuestStayInterface extends Application {
 
-    public void bookGuestStay(Scanner scanner) { // Accept scanner as a parameter
-        try {
-            System.out.println("--- Guest Stay Booking ---");
+    @Override
+    public void start(Stage guestStayStage) {
+        guestStayStage.setTitle("Guest Stay Booking");
 
-            String idInfo = getStringInput(scanner, "Enter Guest CIN: ");
-            Date dateOfBirth = parseDateInput(scanner, "Enter Guest Date of Birth (yyyy-MM-dd): ");
-            String fullName = getStringInput(scanner, "Enter Guest Full Name: ");
-            String contactInfo = getStringInput(scanner, "Enter Guest Contact Info: ");
-            String address = getStringInput(scanner, "Enter Guest Address: ");
-            int guestId = parseIntInput(scanner, "Enter Guest ID: ");
-            int bookerId = parseIntInput(scanner, "Enter Booker ID: ");
-            Room.RoomType roomType = parseRoomType(scanner, "Enter Room Type (S1/S2/D1/D2/E1/E2/F3/F4): ");
-            Date dateIn = parseDateInput(scanner, "Enter Check-In Date (yyyy-MM-dd): ");
-            Date dateOut = parseDateInput(scanner, "Enter Check-Out Date (yyyy-MM-dd): ");
+        // Create a GridPane layout
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setHgap(10);
+        grid.setVgap(10);
 
-            if (!dateIn.before(dateOut)) {
-                throw new IllegalArgumentException("Check-In Date must be before Check-Out Date.");
-            }
+        // Input fields
+        TextField idInfoField = new TextField();
+        idInfoField.setPromptText("Guest CIN");
 
-            GuestStay guestStay = new GuestStay(idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId,
-                    roomType, dateIn, dateOut);
+        TextField dateOfBirthField = new TextField();
+        dateOfBirthField.setPromptText("Date of Birth (yyyy-MM-dd)");
 
-            GuestStayDAL.addGuestStay(guestStay);
+        TextField fullNameField = new TextField();
+        fullNameField.setPromptText("Full Name");
 
-            System.out.println("Guest stay booked successfully!");
-        } catch (SQLException | IllegalArgumentException | ParseException e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+        TextField contactInfoField = new TextField();
+        contactInfoField.setPromptText("Contact Info");
 
-    // Helper Methods
-    private String getStringInput(Scanner scanner, String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine().trim();
-    }
+        TextField addressField = new TextField();
+        addressField.setPromptText("Address");
 
-    private Date parseDateInput(Scanner scanner, String prompt) throws ParseException {
-        while (true) {
+        TextField guestIdField = new TextField();
+        guestIdField.setPromptText("Guest ID");
+
+        TextField bookerIdField = new TextField();
+        bookerIdField.setPromptText("Booker ID");
+
+        ComboBox<String> roomTypeBox = new ComboBox<>();
+        roomTypeBox.getItems().addAll("S1", "S2", "D1", "D2", "E1", "E2", "F3", "F4");
+        roomTypeBox.setPromptText("Room Type");
+
+        TextField dateInField = new TextField();
+        dateInField.setPromptText("Check-In Date (yyyy-MM-dd)");
+
+        TextField dateOutField = new TextField();
+        dateOutField.setPromptText("Check-Out Date (yyyy-MM-dd)");
+
+        // Add components to grid
+        grid.add(new Label("Guest CIN:"), 0, 0);
+        grid.add(idInfoField, 1, 0);
+
+        grid.add(new Label("Date of Birth:"), 0, 1);
+        grid.add(dateOfBirthField, 1, 1);
+
+        grid.add(new Label("Full Name:"), 0, 2);
+        grid.add(fullNameField, 1, 2);
+
+        grid.add(new Label("Contact Info:"), 0, 3);
+        grid.add(contactInfoField, 1, 3);
+
+        grid.add(new Label("Address:"), 0, 4);
+        grid.add(addressField, 1, 4);
+
+        grid.add(new Label("Guest ID:"), 0, 5);
+        grid.add(guestIdField, 1, 5);
+
+        grid.add(new Label("Booker ID:"), 0, 6);
+        grid.add(bookerIdField, 1, 6);
+
+        grid.add(new Label("Room Type:"), 0, 7);
+        grid.add(roomTypeBox, 1, 7);
+
+        grid.add(new Label("Check-In Date:"), 0, 8);
+        grid.add(dateInField, 1, 8);
+
+        grid.add(new Label("Check-Out Date:"), 0, 9);
+        grid.add(dateOutField, 1, 9);
+
+        // Button
+        Button submitButton = new Button("Book Stay");
+        grid.add(submitButton, 1, 10);
+
+        // Handle button click
+        submitButton.setOnAction(e -> {
             try {
-                System.out.print(prompt);
-                return new SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine().trim());
-            } catch (ParseException e) {
-                System.out.println("Invalid date format. Please use yyyy-MM-dd.");
+                String idInfo = idInfoField.getText().trim();
+                Date dateOfBirth = parseDate(dateOfBirthField.getText().trim());
+                String fullName = fullNameField.getText().trim();
+                String contactInfo = contactInfoField.getText().trim();
+                String address = addressField.getText().trim();
+                int guestId = Integer.parseInt(guestIdField.getText().trim());
+                int bookerId = Integer.parseInt(bookerIdField.getText().trim());
+                Room.RoomType roomType = Room.RoomType.valueOf(roomTypeBox.getValue());
+                Date dateIn = parseDate(dateInField.getText().trim());
+                Date dateOut = parseDate(dateOutField.getText().trim());
+
+                if (!dateIn.before(dateOut)) {
+                    throw new IllegalArgumentException("Check-In Date must be before Check-Out Date.");
+                }
+
+                GuestStay guestStay = new GuestStay(idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId,
+                        roomType, dateIn, dateOut);
+
+                GuestStayDAL.addGuestStay(guestStay);
+
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Guest stay booked successfully!");
+            } catch (IllegalArgumentException | ParseException ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
+            } catch (Exception ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Unexpected error occurred.");
+                ex.printStackTrace();
             }
-        }
+        });
+
+        // Show scene
+        Scene scene = new Scene(grid, 400, 450);
+        guestStayStage.setScene(scene);
+        guestStayStage.show();
     }
 
-    private Room.RoomType parseRoomType(Scanner scanner, String prompt) {
-        while (true) {
-            try {
-                System.out.print(prompt);
-                return Room.RoomType.valueOf(scanner.nextLine().trim().toUpperCase());
-            } catch (IllegalArgumentException e) {
-                System.out
-                        .println("Invalid room type. Please enter a valid type (S1/S2/D1/D2/E1/E2/F3/F4). Try again.");
-            }
-        }
+    private Date parseDate(String dateStr) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
     }
 
-    private int parseIntInput(Scanner scanner, String prompt) {
-        while (true) {
-            try {
-                System.out.print(prompt);
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
-            }
-        }
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
