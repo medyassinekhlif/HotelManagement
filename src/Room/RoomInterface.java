@@ -1,204 +1,232 @@
 package Room;
 
-import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
+public class RoomInterface {
 
-public class RoomInterface extends Application {
+    private final RoomDAL roomDAL = new RoomDAL();
 
-    public static void main(String[] args) {
-        launch(args); // Launch the JavaFX application
+    public void start(Stage mainStage) {
+        mainStage.setTitle("Room Management");
+
+        VBox mainLayout = new VBox(10);
+        mainLayout.setPadding(new Insets(10));
+        mainLayout.setAlignment(Pos.CENTER); // Center the buttons
+
+        // Create buttons
+        Button addRoomButton = new Button("Add Room");
+        Button deleteRoomButton = new Button("Delete Room");
+        Button updateRoomButton = new Button("Update Room");
+
+        // Set button size to be the same for all
+        addRoomButton.setPrefSize(200, 50);
+        deleteRoomButton.setPrefSize(200, 50);
+        updateRoomButton.setPrefSize(200, 50);
+
+        // Set button actions
+        addRoomButton.setOnAction(e -> showAddRoomWindow());
+        deleteRoomButton.setOnAction(e -> showDeleteRoomWindow());
+        updateRoomButton.setOnAction(e -> showUpdateRoomWindow());
+
+        mainLayout.getChildren().addAll(addRoomButton, deleteRoomButton, updateRoomButton);
+
+        // Create an Image object and set the background image
+        Image backgroundImage = new Image("file:Resources/background.jpg");
+        BackgroundImage bgImage = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        mainLayout.setBackground(new Background(bgImage));
+
+        Scene scene = new Scene(mainLayout, 800, 600);
+        scene.getStylesheets().add("file:resources/styles.css"); // External CSS file
+        mainStage.setScene(scene);
+        mainStage.show();
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Room Management");
+    public void showAddRoomWindow() {
+        Stage stage = new Stage();
+        stage.setTitle("Add Room");
 
-        // Create the main layout
-        VBox layout = new VBox(10);
+        GridPane gridPane = createGridPane();
 
-        // Create buttons for different actions
-        Button addButton = new Button("Add Room");
-        Button updateButton = new Button("Update Room");
-        Button deleteButton = new Button("Delete Room");
-        Button viewButton = new Button("View All Rooms");
-        Button backButton = new Button("Back to Main Menu");
-
-        // Set up button actions
-        addButton.setOnAction(e -> showAddRoomWindow());
-        updateButton.setOnAction(e -> showUpdateRoomWindow());
-        deleteButton.setOnAction(e -> showDeleteRoomWindow());
-        viewButton.setOnAction(e -> showViewRoomsWindow());
-        backButton.setOnAction(e -> primaryStage.close());
-
-        layout.getChildren().addAll(addButton, updateButton, deleteButton, viewButton, backButton);
-
-        Scene scene = new Scene(layout, 300, 200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    private void showAddRoomWindow() {
-        Stage addStage = new Stage();
-        addStage.setTitle("Add Room");
-
-        VBox layout = new VBox(10);
-        TextField idField = new TextField();
-        idField.setPromptText("Enter Room ID");
-
-        TextField typeField = new TextField();
-        typeField.setPromptText("Enter Room Type (S1/S2/D1/D2/E1/E2/F3/F4)");
+        ComboBox<Room.RoomType> roomTypeComboBox = new ComboBox<>();
+        roomTypeComboBox.getItems().setAll(Room.RoomType.values());
+        roomTypeComboBox.setValue(Room.RoomType.S1); // Default to S1
 
         TextField numberOfRoomsField = new TextField();
-        numberOfRoomsField.setPromptText("Enter Number of Rooms");
+        TextField pricePerNightField = new TextField();
+        TextField roomImageField = new TextField();
 
-        TextField priceField = new TextField();
-        priceField.setPromptText("Enter Price Per Night");
+        // Style for input fields
+        numberOfRoomsField.setStyle("-fx-font-size: 16px;");
+        pricePerNightField.setStyle("-fx-font-size: 16px;");
+        roomImageField.setStyle("-fx-font-size: 16px;");
+        numberOfRoomsField.setPrefSize(250, 30);
+        pricePerNightField.setPrefSize(250, 30);
+        roomImageField.setPrefSize(250, 30);
 
-        TextField imageField = new TextField();
-        imageField.setPromptText("Enter Room Image URL");
+        gridPane.add(new Label("Room Type (Primary Key):"), 0, 0);
+        gridPane.add(roomTypeComboBox, 1, 0);
+        gridPane.add(new Label("Number of Rooms:"), 0, 1);
+        gridPane.add(numberOfRoomsField, 1, 1);
+        gridPane.add(new Label("Price per Night:"), 0, 2);
+        gridPane.add(pricePerNightField, 1, 2);
+        gridPane.add(new Label("Room Image URL:"), 0, 3);
+        gridPane.add(roomImageField, 1, 3);
 
         Button addButton = new Button("Add Room");
+        addButton.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-font-weight: bold;");
+        addButton.setPrefSize(250, 60);
+        gridPane.add(addButton, 1, 4);
+
         addButton.setOnAction(e -> {
             try {
-                addRoom(idField.getText(), typeField.getText(), numberOfRoomsField.getText(), priceField.getText(), imageField.getText());
-                addStage.close();
-            } catch (SQLException ex) {
-                showError("Database Error: " + ex.getMessage());
+                Room.RoomType roomType = roomTypeComboBox.getValue();
+                String numberOfRooms = numberOfRoomsField.getText();
+                String pricePerNight = pricePerNightField.getText();
+                String roomImage = roomImageField.getText();
+
+                if (roomType == null || numberOfRooms.isEmpty() || pricePerNight.isEmpty() || roomImage.isEmpty()) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
+                    return;
+                }
+
+                Room newRoom = new Room(roomImage, Double.parseDouble(pricePerNight), roomType,
+                        Integer.parseInt(numberOfRooms));
+                roomDAL.addRoom(newRoom);
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Room added successfully.");
+                stage.close();
+            } catch (Exception ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to add room: " + ex.getMessage());
             }
         });
 
-        layout.getChildren().addAll(idField, typeField, numberOfRoomsField, priceField, imageField, addButton);
-
-        Scene scene = new Scene(layout, 300, 250);
-        addStage.setScene(scene);
-        addStage.show();
+        stage.setScene(new Scene(gridPane, 400, 300));
+        stage.show();
     }
 
-    private void addRoom(String id, String type, String numberOfRoomsStr, String pricePerNightStr, String roomImage) throws SQLException {
-        Room.RoomType roomType = Room.RoomType.valueOf(type.toUpperCase());
-        int numberOfRooms = Integer.parseInt(numberOfRoomsStr);
-        double pricePerNight = Double.parseDouble(pricePerNightStr);
+    public void showDeleteRoomWindow() {
+        Stage stage = new Stage();
+        stage.setTitle("Delete Room");
 
-        Room room = new Room(id, roomImage, pricePerNight, roomType, numberOfRooms);
-        RoomDAL.addRoom(room);
-        showInfo("Room added successfully!");
-    }
+        GridPane gridPane = createGridPane();
 
-    private void showUpdateRoomWindow() {
-        Stage updateStage = new Stage();
-        updateStage.setTitle("Update Room");
+        ComboBox<Room.RoomType> roomTypeComboBox = new ComboBox<>();
+        roomTypeComboBox.getItems().setAll(Room.RoomType.values());
+        roomTypeComboBox.setValue(Room.RoomType.S1); // Default to S1
 
-        VBox layout = new VBox(10);
-        TextField idField = new TextField();
-        idField.setPromptText("Enter Room ID");
-
-        TextField typeField = new TextField();
-        typeField.setPromptText("Enter Room Type (S1/S2/D1/D2/E1/E2/F3/F4)");
-
-        TextField numberOfRoomsField = new TextField();
-        numberOfRoomsField.setPromptText("Enter Updated Number of Rooms");
-
-        TextField priceField = new TextField();
-        priceField.setPromptText("Enter Updated Price Per Night");
-
-        TextField imageField = new TextField();
-        imageField.setPromptText("Enter Updated Room Image URL");
-
-        Button updateButton = new Button("Update Room");
-        updateButton.setOnAction(e -> {
-            try {
-                updateRoom(idField.getText(), typeField.getText(), numberOfRoomsField.getText(), priceField.getText(), imageField.getText());
-                updateStage.close();
-            } catch (SQLException ex) {
-                showError("Database Error: " + ex.getMessage());
-            }
-        });
-
-        layout.getChildren().addAll(idField, typeField, numberOfRoomsField, priceField, imageField, updateButton);
-
-        Scene scene = new Scene(layout, 300, 250);
-        updateStage.setScene(scene);
-        updateStage.show();
-    }
-
-    private void updateRoom(String roomId, String type, String numberOfRoomsStr, String pricePerNightStr, String roomImage) throws SQLException {
-        Room.RoomType roomType = Room.RoomType.valueOf(type.toUpperCase());
-        int numberOfRooms = Integer.parseInt(numberOfRoomsStr);
-        double pricePerNight = Double.parseDouble(pricePerNightStr);
-
-        Room updatedRoom = new Room(roomId, roomImage, pricePerNight, roomType, numberOfRooms);
-        RoomDAL.updateRoom(roomId, updatedRoom);
-        showInfo("Room updated successfully!");
-    }
-
-    private void showDeleteRoomWindow() {
-        Stage deleteStage = new Stage();
-        deleteStage.setTitle("Delete Room");
-
-        VBox layout = new VBox(10);
-        TextField idField = new TextField();
-        idField.setPromptText("Enter Room ID to delete");
+        gridPane.add(new Label("Room Type (Primary Key):"), 0, 0);
+        gridPane.add(roomTypeComboBox, 1, 0);
 
         Button deleteButton = new Button("Delete Room");
+        deleteButton.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-font-weight: bold;");
+        deleteButton.setPrefSize(250, 60);
+        gridPane.add(deleteButton, 1, 1);
+
         deleteButton.setOnAction(e -> {
             try {
-                deleteRoom(idField.getText());
-                deleteStage.close();
-            } catch (SQLException ex) {
-                showError("Database Error: " + ex.getMessage());
+                Room.RoomType roomType = roomTypeComboBox.getValue();
+
+                if (roomType == null) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Room Type is required.");
+                    return;
+                }
+
+                roomDAL.deleteRoom(roomType);
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Room deleted successfully.");
+                stage.close();
+            } catch (Exception ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete room: " + ex.getMessage());
             }
         });
 
-        layout.getChildren().addAll(idField, deleteButton);
-
-        Scene scene = new Scene(layout, 300, 150);
-        deleteStage.setScene(scene);
-        deleteStage.show();
+        stage.setScene(new Scene(gridPane, 400, 200));
+        stage.show();
     }
 
-    private void deleteRoom(String roomId) throws SQLException {
-        RoomDAL.deleteRoom(roomId);
-        showInfo("Room deleted successfully!");
-    }
+    public void showUpdateRoomWindow() {
+        Stage stage = new Stage();
+        stage.setTitle("Update Room");
 
-    private void showViewRoomsWindow() {
-        Stage viewStage = new Stage();
-        viewStage.setTitle("View All Rooms");
+        GridPane gridPane = createGridPane();
 
-        VBox layout = new VBox(10);
-        ListView<String> listView = new ListView<>();
+        ComboBox<Room.RoomType> roomTypeComboBox = new ComboBox<>();
+        roomTypeComboBox.getItems().setAll(Room.RoomType.values());
+        roomTypeComboBox.setValue(Room.RoomType.S1); // Default to S1
 
-        try {
-            for (Room room : RoomDAL.getRooms()) {
-                listView.getItems().add(room.toString());
+        TextField numberOfRoomsField = new TextField();
+        TextField pricePerNightField = new TextField();
+        TextField roomImageField = new TextField();
+
+        // Style for input fields
+        numberOfRoomsField.setStyle("-fx-font-size: 16px;");
+        pricePerNightField.setStyle("-fx-font-size: 16px;");
+        roomImageField.setStyle("-fx-font-size: 16px;");
+        numberOfRoomsField.setPrefSize(250, 30);
+        pricePerNightField.setPrefSize(250, 30);
+        roomImageField.setPrefSize(250, 30);
+
+        gridPane.add(new Label("Room Type (Primary Key):"), 0, 0);
+        gridPane.add(roomTypeComboBox, 1, 0);
+        gridPane.add(new Label("Number of Rooms:"), 0, 1);
+        gridPane.add(numberOfRoomsField, 1, 1);
+        gridPane.add(new Label("Price per Night:"), 0, 2);
+        gridPane.add(pricePerNightField, 1, 2);
+        gridPane.add(new Label("Room Image URL:"), 0, 3);
+        gridPane.add(roomImageField, 1, 3);
+
+        Button updateButton = new Button("Update Room");
+        updateButton.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-font-weight: bold;");
+        updateButton.setPrefSize(250, 60);
+        gridPane.add(updateButton, 1, 4);
+
+        updateButton.setOnAction(e -> {
+            try {
+                Room.RoomType roomType = roomTypeComboBox.getValue();
+                String numberOfRooms = numberOfRoomsField.getText();
+                String pricePerNight = pricePerNightField.getText();
+                String roomImage = roomImageField.getText();
+
+                if (roomType == null || numberOfRooms.isEmpty() || pricePerNight.isEmpty() || roomImage.isEmpty()) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
+                    return;
+                }
+
+                Room updatedRoom = new Room(roomImage, Double.parseDouble(pricePerNight), roomType,
+                        Integer.parseInt(numberOfRooms));
+                roomDAL.updateRoom(roomType, updatedRoom);
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Room updated successfully.");
+                stage.close();
+            } catch (Exception ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to update room: " + ex.getMessage());
             }
-        } catch (SQLException ex) {
-            showError("Database Error: " + ex.getMessage());
-        }
+        });
 
-        layout.getChildren().add(listView);
-
-        Scene scene = new Scene(layout, 400, 300);
-        viewStage.setScene(scene);
-        viewStage.show();
+        stage.setScene(new Scene(gridPane, 400, 300));
+        stage.show();
     }
 
-    private void showInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    // Helper method to create a common grid pane layout
+    private GridPane createGridPane() {
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        return gridPane;
     }
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+    // Helper method to show alerts
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

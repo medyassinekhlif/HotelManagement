@@ -1,3 +1,5 @@
+
+// Updated settings.json
 {
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
@@ -6,7 +8,7 @@
         "C:/Users/dell store/Desktop/javafx-sdk-23.0.1/lib/*.jar"  
     ],
     "files.exclude": {
-    "**/*.class": true
+        "**/*.class": true
+    }
 }
-
-}
+  

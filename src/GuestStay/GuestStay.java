@@ -49,16 +49,14 @@ public class GuestStay {
         return (int) (diff / (1000 * 60 * 60 * 24));
     }
 
-    // Calculate amount to pay
     public double calculateAmountToPay() {
         double basePrice = nightsSpent * getRoomPrice();
 
-        // Apply discount based on age
         if (dateOfBirth != null) {
             long ageInMs = new Date().getTime() - dateOfBirth.getTime();
             int age = (int) (ageInMs / (365.25 * 24 * 60 * 60 * 1000));
             if (age >= 65) {
-                return basePrice * 0.9; // 10% discount for seniors
+                return basePrice * 0.9; 
             }
         }
         return basePrice;

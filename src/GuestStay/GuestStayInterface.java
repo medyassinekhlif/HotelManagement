@@ -109,7 +109,8 @@ public class GuestStayInterface extends Application {
                     throw new IllegalArgumentException("Check-In Date must be before Check-Out Date.");
                 }
 
-                GuestStay guestStay = new GuestStay(idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId,
+                GuestStay guestStay = new GuestStay(idInfo, dateOfBirth, fullName, contactInfo, address, guestId,
+                        bookerId,
                         roomType, dateIn, dateOut);
 
                 GuestStayDAL.addGuestStay(guestStay);
@@ -122,11 +123,15 @@ public class GuestStayInterface extends Application {
                 ex.printStackTrace();
             }
         });
+        String cssFile = getClass().getResource("/resources/styles.css").toExternalForm();
 
         // Show scene
         Scene scene = new Scene(grid, 400, 450);
+        scene.getStylesheets().add(cssFile);
+
         guestStayStage.setScene(scene);
         guestStayStage.show();
+
     }
 
     private Date parseDate(String dateStr) throws ParseException {

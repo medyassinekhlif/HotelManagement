@@ -6,36 +6,50 @@ import java.util.List;
 
 import Room.Room;
 import Utils.DbConnection;
-import java.text.SimpleDateFormat; // Add this import
+import java.text.SimpleDateFormat;
 
 public class GuestStayDAL {
     public static void addGuestStay(GuestStay guestStay) throws SQLException {
-        String query = "INSERT INTO gueststays (idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId, roomType, dateIn, dateOut, nightsSpent, amountToPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, guestStay.getIdInfo());
-            ps.setDate(2, toSqlDate(guestStay.getDateOfBirth())); // Convert java.util.Date to java.sql.Date
-            ps.setString(3, guestStay.getFullName());
-            ps.setString(4, guestStay.getContactInfo());
-            ps.setString(5, guestStay.getAddress());
-            ps.setInt(6, guestStay.getGuestId());
-            ps.setInt(7, guestStay.getBookerId());
-            ps.setString(8, guestStay.getRoomType().name());
-            ps.setDate(9, toSqlDate(guestStay.getDateIn())); // Convert java.util.Date to java.sql.Date
-            ps.setDate(10, toSqlDate(guestStay.getDateOut())); // Convert java.util.Date to java.sql.Date
-            ps.setInt(11, guestStay.getNightsSpent());
-            ps.setDouble(12, guestStay.getAmountToPay());
-
-            ps.executeUpdate();
+        String insertGuestStayQuery = "INSERT INTO gueststays (idInfo, dateOfBirth, fullName, contactInfo, address, guestId, bookerId, roomType, dateIn, dateOut, nightsSpent, amountToPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String updateRoomsQuery = "UPDATE rooms SET numberOfRooms = numberOfRooms - 1 WHERE roomType = ? AND numberOfRooms > 0";
+    
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement psGuestStay = conn.prepareStatement(insertGuestStayQuery);
+             PreparedStatement psUpdateRooms = conn.prepareStatement(updateRoomsQuery)) {
+    
+            // Insert into gueststays
+            psGuestStay.setString(1, guestStay.getIdInfo());
+            psGuestStay.setDate(2, toSqlDate(guestStay.getDateOfBirth())); // Convert java.util.Date to java.sql.Date
+            psGuestStay.setString(3, guestStay.getFullName());
+            psGuestStay.setString(4, guestStay.getContactInfo());
+            psGuestStay.setString(5, guestStay.getAddress());
+            psGuestStay.setInt(6, guestStay.getGuestId());
+            psGuestStay.setInt(7, guestStay.getBookerId());
+            psGuestStay.setString(8, guestStay.getRoomType().name());
+            psGuestStay.setDate(9, toSqlDate(guestStay.getDateIn())); // Convert java.util.Date to java.sql.Date
+            psGuestStay.setDate(10, toSqlDate(guestStay.getDateOut())); // Convert java.util.Date to java.sql.Date
+            psGuestStay.setInt(11, guestStay.getNightsSpent());
+            psGuestStay.setDouble(12, guestStay.getAmountToPay());
+    
+            psGuestStay.executeUpdate();
+    
+            // Update number of rooms
+            psUpdateRooms.setString(1, guestStay.getRoomType().name());
+            int rowsAffected = psUpdateRooms.executeUpdate();
+    
+            if (rowsAffected == 0) {
+                throw new SQLException("Room booking failed: No rooms available for the selected type.");
+            }
         } catch (SQLException e) {
             System.err.println("Database Error: " + e.getMessage());
             throw e;
         }
     }
-
+    
     private static java.sql.Date toSqlDate(java.util.Date date) {
         return new java.sql.Date(date.getTime());
     }
+    
 
     public static List<GuestStay> getGuestStays() throws SQLException {
         List<GuestStay> guestStays = new ArrayList<>();

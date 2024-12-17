@@ -1,13 +1,24 @@
 /* Root node styles */
 .root {
     -fx-font-family: 'Arial, sans-serif';
+    -fx-alignment: center; /* Center all children horizontally and vertically */
+   
+    -fx-padding: 20px;
+}
+
+/* Centering content inside containers */
+.center-container {
+    -fx-alignment: center; /* Center the contents horizontally and vertically */
+    -fx-spacing: 20px; /* Space between elements */
+    -fx-padding: 20px;
 }
 
 /* Text styles */
 .text {
-    -fx-font-size: 24px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-fill: #1f2937; /* Tailwind gray-800 color */
+    -fx-alignment: center; /* Center the text */
 }
 
 /* Button styles */
@@ -18,8 +29,34 @@
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-font-size: 14px;
+    -fx-alignment: center;
 }
 
 .button:hover {
     -fx-background-color: #2563eb; /* Tailwind blue-600 color */
+}
+
+/* Input styles */
+.text-field, .password-field {
+    -fx-padding: 8px 12px;
+    -fx-background-color: #f3f4f6; /* Tailwind gray-200 color */
+    -fx-border-color: #d1d5db; /* Tailwind gray-300 color */
+    -fx-border-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1f2937; /* Tailwind gray-800 color */
+    -fx-alignment: center; /* Center the text inside input fields */
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #3b82f6; /* Tailwind blue-500 color */
+    -fx-background-color: #ffffff; /* White on focus */
+}
+
+.text-field:invalid, .password-field:invalid {
+    -fx-border-color: #ef4444; /* Tailwind red-500 color */
+}
+
+.text-field:disabled, .password-field:disabled {
+    -fx-background-color: #e5e7eb; /* Tailwind gray-300 color */
+    -fx-border-color: #d1d5db; /* Tailwind gray-300 color */
 }

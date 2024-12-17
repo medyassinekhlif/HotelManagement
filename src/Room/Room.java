@@ -6,14 +6,13 @@ public class Room {
         S1, S2, D1, D2, E1, E2, F3, F4
     }
 
-    private String id;
+
     private String roomImage;
     private double pricePerNight;
     private RoomType roomType;
-    private int numberOfRooms; // Number of available rooms of this type
+    private int numberOfRooms; 
 
-    public Room(String id, String roomImage, double pricePerNight, RoomType roomType, int numberOfRooms) {
-        this.id = id;
+    public Room(String roomImage, double pricePerNight, RoomType roomType, int numberOfRooms) {
         this.roomImage = roomImage;
         this.pricePerNight = pricePerNight;
         this.roomType = roomType;
@@ -21,14 +20,7 @@ public class Room {
     }
 
     // Getters and Setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    
     public String getRoomImage() {
         return roomImage;
     }
@@ -93,6 +85,6 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room ID: " + id + ", Type: " + roomType + ", Price: " + pricePerNight + ", Available Rooms: " + numberOfRooms;
+        return "Type: " + roomType + ", Price: " + pricePerNight + ", Available Rooms: " + numberOfRooms;
     }
 }
