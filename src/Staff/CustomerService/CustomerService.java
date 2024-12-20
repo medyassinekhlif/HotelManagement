@@ -3,6 +3,7 @@ package Staff.CustomerService;
 import java.math.BigDecimal;
 
 import Staff.Staff;
+import javafx.scene.control.TextField;
 
 public class CustomerService extends Staff {
 
@@ -66,5 +67,10 @@ public class CustomerService extends Staff {
                 ", shift='" + shift + '\'' +
                 ", feedbackReceived='" + feedbackReceived + '\'' +
                 '}';
+    }
+
+    public void setFeedbackReceived(TextField feedbackReceived2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setFeedbackReceived'");
     }
 }

@@ -1,62 +1,80 @@
-/* Root node styles */
-.root {
-    -fx-font-family: 'Arial, sans-serif';
-    -fx-alignment: center; /* Center all children horizontally and vertically */
-   
-    -fx-padding: 20px;
-}
-
-/* Centering content inside containers */
-.center-container {
-    -fx-alignment: center; /* Center the contents horizontally and vertically */
-    -fx-spacing: 20px; /* Space between elements */
-    -fx-padding: 20px;
-}
-
-/* Text styles */
-.text {
-    -fx-font-size: 13px;
+#title {
+    -fx-font-size: 40px;
     -fx-font-weight: bold;
-    -fx-fill: #1f2937; /* Tailwind gray-800 color */
-    -fx-alignment: center; /* Center the text */
-}
-
-/* Button styles */
-.button {
-    -fx-padding: 10px 20px;
-    -fx-background-color: #3b82f6; /* Tailwind blue-500 color */
-    -fx-text-fill: white;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-font-size: 14px;
+    -fx-fill: gold;
+    -fx-font-family: "Georgia, serif";
     -fx-alignment: center;
 }
 
-.button:hover {
-    -fx-background-color: #2563eb; /* Tailwind blue-600 color */
+.root {
+    -fx-font-family: 'Arial, sans-serif';
+    -fx-alignment: center;
+    -fx-padding: 20px;
 }
 
-/* Input styles */
-.text-field, .password-field {
-    -fx-padding: 8px 12px;
-    -fx-background-color: #f3f4f6; /* Tailwind gray-200 color */
-    -fx-border-color: #d1d5db; /* Tailwind gray-300 color */
+.center-container {
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+    -fx-padding: 20px;
+}
+
+Text {
+    -fx-font-size: 16px;
+    -fx-fill: rgb(209, 191, 255);
+    -fx-font-family: "Palatino, serif";
+}
+
+.text {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-fill: rgb(182, 208, 255);
+    -fx-font-family: "Bookman, serif";
+    -fx-alignment: center;
+}
+
+Button {
+    -fx-padding: 4px 12px;
+    -fx-background-color: #0d58cf;
+    -fx-text-fill: rgb(182, 208, 255);
+    -fx-font-family: "Bookman, serif";
     -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-alignment: center;
+    -fx-pref-width: 230px;
+    -fx-pref-height: 35px;
+}
+
+Button:hover {
+    -fx-background-color: #092666;
+}
+
+.text-field,
+.password-field {
+    -fx-padding: 4px 6px;
+    -fx-background-color: #e9effa;
+    -fx-border-color: #1d2735;
     -fx-font-size: 14px;
-    -fx-text-fill: #1f2937; /* Tailwind gray-800 color */
-    -fx-alignment: center; /* Center the text inside input fields */
+    -fx-text-fill: #000000;
+    -fx-font-family: "Bookman, serif";
+    -fx-alignment: center;
 }
 
-.text-field:focused, .password-field:focused {
-    -fx-border-color: #3b82f6; /* Tailwind blue-500 color */
-    -fx-background-color: #ffffff; /* White on focus */
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-background-color: #e9effa;
+    -fx-font-family: "Bookman, serif";
 }
 
-.text-field:invalid, .password-field:invalid {
-    -fx-border-color: #ef4444; /* Tailwind red-500 color */
+.text-field:invalid,
+.password-field:invalid {
+    -fx-border-color: #ef4444;
+    -fx-font-family: "Bookman, serif";
 }
 
-.text-field:disabled, .password-field:disabled {
-    -fx-background-color: #e5e7eb; /* Tailwind gray-300 color */
-    -fx-border-color: #d1d5db; /* Tailwind gray-300 color */
+.text-field:disabled,
+.password-field:disabled {
+    -fx-background-color: #e9effa;
+    -fx-border-color: #d1d5db;
+    -fx-font-family: "Bookman, serif";
 }

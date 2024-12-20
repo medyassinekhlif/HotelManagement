@@ -1,84 +1,91 @@
 package Staff.Technical;
 
+import Main.MainInterface;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.util.List;
 
 public class TechnicalInterface extends Application {
 
     private static final TechnicalDAL technicalDAL = new TechnicalDAL();
+    private Scene initialScene;
+    private static final String stylePath = "file:resources/styles.css";
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Technical Management System");
+        stage.setTitle("Customer Service Management System");
 
-        VBox mainLayout = new VBox(10);
-        mainLayout.setPadding(new Insets(15));
+        // Set the width and height of the stage
+        stage.setWidth(800);
+        stage.setHeight(600);
 
-        Label title = new Label("Technical Management System");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        VBox mainLayout = createMainLayout(stage);
 
-        Button addTechnicalButton = new Button("Add Technical");
-        Button viewTechnicalByIdButton = new Button("View Technical by ID");
-        Button viewAllTechnicalsButton = new Button("View All Technicals");
-        Button updateTechnicalButton = new Button("Update Technical");
-        Button deleteTechnicalButton = new Button("Delete Technical");
-        Button exitButton = new Button("Exit");
+        // Set the same background as MainInterface
+        setBackground(mainLayout);
 
-        // Event Handlers
-        addTechnicalButton.setOnAction(e -> addTechnical(stage));
-        viewTechnicalByIdButton.setOnAction(e -> viewTechnicalById(stage));
-        viewAllTechnicalsButton.setOnAction(e -> viewAllTechnicals(stage));
-        updateTechnicalButton.setOnAction(e -> updateTechnical(stage));
-        deleteTechnicalButton.setOnAction(e -> deleteTechnical(stage));
-        exitButton.setOnAction(e -> stage.close());
-
-        mainLayout.getChildren().addAll(title, addTechnicalButton, viewTechnicalByIdButton, viewAllTechnicalsButton,
-                updateTechnicalButton, deleteTechnicalButton, exitButton);
-        String cssFile = getClass().getResource("/resources/styles.css").toExternalForm();
-
-        Scene scene = new Scene(mainLayout, 400, 300);
-        scene.getStylesheets().add(cssFile);
-
-        stage.setScene(scene);
-
+        initialScene = new Scene(mainLayout);
+        initialScene.getStylesheets().add(stylePath);
+        stage.setScene(initialScene);
         stage.show();
     }
 
-    private void addTechnical(Stage stage) {
-        Stage addStage = new Stage();
-        addStage.setTitle("Add Technical");
+    private VBox createMainLayout(Stage stage) {
+        VBox mainLayout = new VBox(10);
+        mainLayout.setPadding(new Insets(15));
 
+        Label title = new Label("Customer Service Management System");
+
+        Button addTechnicalButton = new Button("Add Customer Service");
+        Button viewTechnicalsButton = new Button("View Customer Services");
+        Button updateTechnicalButton = new Button("Update Customer Service");
+        Button deleteTechnicalButton = new Button("Delete Customer Service");
+        Button backButton = new Button("Back");
+
+        addTechnicalButton.setOnAction(e -> addTechnical(stage));
+        viewTechnicalsButton.setOnAction(e -> viewTechnicals(stage));
+        updateTechnicalButton.setOnAction(e -> updateTechnical(stage));
+        deleteTechnicalButton.setOnAction(e -> deleteTechnical(stage));
+        backButton.setOnAction(e -> goBack(stage));
+
+        mainLayout.getChildren().addAll(title, addTechnicalButton, viewTechnicalsButton,
+                updateTechnicalButton, deleteTechnicalButton, backButton);
+        return mainLayout;
+    }
+
+    private void addTechnical(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        // Create form fields
-        TextField staffIdField = createTextField(gridPane, "Staff ID:", 0);
-        TextField firstNameField = createTextField(gridPane, "First Name:", 1);
-        TextField lastNameField = createTextField(gridPane, "Last Name:", 2);
-        TextField emailField = createTextField(gridPane, "Email:", 3);
-        TextField phoneNumberField = createTextField(gridPane, "Phone Number:", 4);
-        TextField addressField = createTextField(gridPane, "Address:", 5);
-        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 6);
-        TextField salaryField = createTextField(gridPane, "Salary:", 7);
-        TextField statusField = createTextField(gridPane, "Status:", 8);
-        TextField departmentField = createTextField(gridPane, "Department:", 9);
-        TextField jobTitleField = createTextField(gridPane, "Job Title:", 10);
-        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 11);
-        TextField technicalSkillsField = createTextField(gridPane, "Technical Skills:", 12);
-        TextField certificationsField = createTextField(gridPane, "Certifications:", 13);
-        TextField workLocationField = createTextField(gridPane, "Work Location:", 14);
-        TextField lastTrainingDateField = createTextField(gridPane, "Last Training Date (yyyy-mm-dd):", 15);
+        TextField staffIdField = createTextField(gridPane, "Staff ID:", 0, 0);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 1);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 0);
+        TextField emailField = createTextField(gridPane, "Email:", 1, 1);
+        TextField phoneNumberField = createTextField(gridPane, "Phone Number:", 2, 0);
+        TextField addressField = createTextField(gridPane, "Address:", 2, 1);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 0);
+        TextField salaryField = createTextField(gridPane, "Salary:", 3, 1);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 0);
+        TextField departmentField = createTextField(gridPane, "Department:", 4, 1);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 0);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 1);
+        TextField technicalSkillsField = createTextField(gridPane, "Shift Type:", 6, 0);
+        TextField certificationsField = createTextField(gridPane, "Certifications:", 6, 1);
+        TextField workLocationField = createTextField(gridPane, "Responsibility Level:", 7, 0);
+        TextField LastTrainingDateField = createTextField(gridPane, "Performance Rating:", 7, 1);
 
-        // Submit button
+        Button backButton = new Button("Back");
+        gridPane.add(backButton, 0, 12);
         Button submitButton = new Button("Submit");
-        gridPane.add(submitButton, 1, 16);
+        gridPane.add(submitButton, 1, 12);
+
+        backButton.setOnAction(e -> stage.setScene(initialScene));
 
         submitButton.setOnAction(e -> {
             try {
@@ -98,67 +105,29 @@ public class TechnicalInterface extends Application {
                 technical.setTechnicalSkills(technicalSkillsField.getText());
                 technical.setCertifications(certificationsField.getText());
                 technical.setWorkLocation(workLocationField.getText());
-                technical.setLastTrainingDate(java.sql.Date.valueOf(lastTrainingDateField.getText()));
+                technical.setLastTrainingDate(java.sql.Date.valueOf(LastTrainingDateField.getText()));
 
                 if (technicalDAL.insertTechnical(technical)) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Technical added successfully.");
-                    addStage.close();
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service added successfully.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add technical.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Customer Service.");
                 }
             } catch (Exception ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid input: " + ex.getMessage());
             }
         });
 
-        Scene scene = new Scene(gridPane, 600, 600);
-        addStage.setScene(scene);
-        addStage.show();
-    }
+        setBackground(gridPane);
 
-    private void viewTechnicalById(Stage stage) {
-        TextInputDialog inputDialog = new TextInputDialog();
-        inputDialog.setTitle("View Technical by ID");
-        inputDialog.setHeaderText("Enter Technical ID:");
-        inputDialog.setContentText("ID:");
-
-        inputDialog.showAndWait().ifPresent(idStr -> {
-            try {
-                int id = Integer.parseInt(idStr);
-                Technical technical = technicalDAL.getTechnicalById(id);
-                if (technical != null) {
-                    showAlert(Alert.AlertType.INFORMATION, "Technical Details", technical.toString());
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "No technical found with ID: " + id);
-                }
-            } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
-            }
-        });
-    }
-
-    private void viewAllTechnicals(Stage stage) {
-        // Implementation for viewing all technicals
-        List<Technical> technicals = technicalDAL.getAllTechnicals();
-        if (technicals.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "View All Technicals", "No technical records found.");
-        } else {
-            StringBuilder details = new StringBuilder();
-            technicals.forEach(technical -> details.append(technical).append("\n"));
-            showAlert(Alert.AlertType.INFORMATION, "View All Technicals", details.toString());
-        }
+        Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void updateTechnical(Stage stage) {
-        Stage updateStage = new Stage();
-        updateStage.setTitle("Update Technical");
+        GridPane gridPane = createFormPane();
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-
-        // Labels and Input Fields
         Label idLabel = new Label("Technical ID:");
         TextField idField = new TextField();
         gridPane.add(idLabel, 0, 0);
@@ -167,83 +136,26 @@ public class TechnicalInterface extends Application {
         Button fetchButton = new Button("Fetch Details");
         gridPane.add(fetchButton, 2, 0);
 
-        Label firstNameLabel = new Label("First Name:");
-        TextField firstNameField = new TextField();
-        gridPane.add(firstNameLabel, 0, 1);
-        gridPane.add(firstNameField, 1, 1);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 0);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 0, 1);
+        TextField emailField = createTextField(gridPane, "Email:", 2, 0);
+        TextField phoneField = createTextField(gridPane, "Phone Number:", 2, 1);
+        TextField addressField = createTextField(gridPane, "Address:", 1, 0);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 1, 1);
+        TextField salaryField = createTextField(gridPane, "Salary:", 2, 0);
+        TextField statusField = createTextField(gridPane, "Status:", 2, 1);
+        TextField departmentField = createTextField(gridPane, "Department:", 3, 0);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 3, 1);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 4, 0);
+        TextField technicalSkillsField = createTextField(gridPane, " Technical Skills:", 4, 1);
+        TextField certificationsField = createTextField(gridPane, "Certifications:", 5, 0);
+        TextField workLocationField = createTextField(gridPane, "work Location:", 5, 1);
+        TextField lastTrainingDateField = createTextField(gridPane, "Last Training Date:", 6, 0);
 
-        Label lastNameLabel = new Label("Last Name:");
-        TextField lastNameField = new TextField();
-        gridPane.add(lastNameLabel, 0, 2);
-        gridPane.add(lastNameField, 1, 2);
-
-        Label emailLabel = new Label("Email:");
-        TextField emailField = new TextField();
-        gridPane.add(emailLabel, 0, 3);
-        gridPane.add(emailField, 1, 3);
-
-        Label phoneLabel = new Label("Phone Number:");
-        TextField phoneField = new TextField();
-        gridPane.add(phoneLabel, 0, 4);
-        gridPane.add(phoneField, 1, 4);
-
-        Label addressLabel = new Label("Address:");
-        TextField addressField = new TextField();
-        gridPane.add(addressLabel, 0, 5);
-        gridPane.add(addressField, 1, 5);
-
-        Label hireDateLabel = new Label("Hire Date (yyyy-mm-dd):");
-        TextField hireDateField = new TextField();
-        gridPane.add(hireDateLabel, 0, 6);
-        gridPane.add(hireDateField, 1, 6);
-
-        Label salaryLabel = new Label("Salary:");
-        TextField salaryField = new TextField();
-        gridPane.add(salaryLabel, 0, 7);
-        gridPane.add(salaryField, 1, 7);
-
-        Label statusLabel = new Label("Status:");
-        TextField statusField = new TextField();
-        gridPane.add(statusLabel, 0, 8);
-        gridPane.add(statusField, 1, 8);
-
-        Label departmentLabel = new Label("Department:");
-        TextField departmentField = new TextField();
-        gridPane.add(departmentLabel, 0, 9);
-        gridPane.add(departmentField, 1, 9);
-
-        Label jobTitleLabel = new Label("Job Title:");
-        TextField jobTitleField = new TextField();
-        gridPane.add(jobTitleLabel, 0, 10);
-        gridPane.add(jobTitleField, 1, 10);
-
-        Label workingHoursLabel = new Label("Working Hours:");
-        TextField workingHoursField = new TextField();
-        gridPane.add(workingHoursLabel, 0, 11);
-        gridPane.add(workingHoursField, 1, 11);
-
-        Label skillsLabel = new Label("Technical Skills:");
-        TextField skillsField = new TextField();
-        gridPane.add(skillsLabel, 0, 12);
-        gridPane.add(skillsField, 1, 12);
-
-        Label certificationsLabel = new Label("Certifications:");
-        TextField certificationsField = new TextField();
-        gridPane.add(certificationsLabel, 0, 13);
-        gridPane.add(certificationsField, 1, 13);
-
-        Label locationLabel = new Label("Work Location:");
-        TextField locationField = new TextField();
-        gridPane.add(locationLabel, 0, 14);
-        gridPane.add(locationField, 1, 14);
-
-        Label trainingDateLabel = new Label("Last Training Date (yyyy-mm-dd):");
-        TextField trainingDateField = new TextField();
-        gridPane.add(trainingDateLabel, 0, 15);
-        gridPane.add(trainingDateField, 1, 15);
-
+        Button backButton = new Button("Back");
+        gridPane.add(backButton, 0, 12);
         Button updateButton = new Button("Update");
-        gridPane.add(updateButton, 0, 16, 2, 1);
+        gridPane.add(updateButton, 1, 12);
 
         fetchButton.setOnAction(e -> {
             int id = Integer.parseInt(idField.getText());
@@ -260,12 +172,12 @@ public class TechnicalInterface extends Application {
                 departmentField.setText(technical.getDepartment());
                 jobTitleField.setText(technical.getJobTitle());
                 workingHoursField.setText(technical.getWorkingHours());
-                skillsField.setText(technical.getTechnicalSkills());
+                technicalSkillsField.setText(technical.getTechnicalSkills());
                 certificationsField.setText(technical.getCertifications());
-                locationField.setText(technical.getWorkLocation());
-                trainingDateField.setText(technical.getLastTrainingDate().toString());
+                workLocationField.setText(technical.getWorkLocation());
+                lastTrainingDateField.setText(technical.getLastTrainingDate().toString());
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "No technical found with ID " + id);
+                showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID " + id);
             }
         });
 
@@ -282,10 +194,10 @@ public class TechnicalInterface extends Application {
             String department = departmentField.getText();
             String jobTitle = jobTitleField.getText();
             String workingHours = workingHoursField.getText();
-            String skills = skillsField.getText();
+            String technicalSkills = technicalSkillsField.getText();
             String certifications = certificationsField.getText();
-            String location = locationField.getText();
-            String trainingDate = trainingDateField.getText();
+            String workLocation = workLocationField.getText();
+            String LastTrainingDate = lastTrainingDateField.getText();
 
             Technical technical = technicalDAL.getTechnicalById(id);
             if (technical != null) {
@@ -300,29 +212,81 @@ public class TechnicalInterface extends Application {
                 technical.setDepartment(department);
                 technical.setJobTitle(jobTitle);
                 technical.setWorkingHours(workingHours);
-                technical.setTechnicalSkills(skills);
+
+                technical.setTechnicalSkills(technicalSkills);
                 technical.setCertifications(certifications);
-                technical.setWorkLocation(location);
-                technical.setLastTrainingDate(java.sql.Date.valueOf(trainingDate));
+                technical.setWorkLocation(workLocation);
+                technical.setLastTrainingDate(java.sql.Date.valueOf(LastTrainingDate));
 
                 if (technicalDAL.updateTechnical(technical)) {
                     showAlert(Alert.AlertType.INFORMATION, "Success", "Technical updated successfully.");
-                    updateStage.close();
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update technical.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update Technical.");
                 }
             }
         });
 
-        Scene scene = new Scene(gridPane, 500, 400);
-        updateStage.setScene(scene);
-        updateStage.show();
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        setBackground(gridPane);
+
+        Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void viewTechnicals(Stage stage) {
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+        vbox.setAlignment(Pos.CENTER);
+
+        TextField idField = new TextField();
+        idField.setPromptText("Enter Customer Service ID");
+
+        Button viewByIdButton = new Button("View by ID");
+        Button viewAllButton = new Button("View All");
+        Button backButton = new Button("Back");
+
+        viewByIdButton.setOnAction(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                Technical technical = technicalDAL.getTechnicalById(id);
+                if (technical != null) {
+                    showAlert(Alert.AlertType.INFORMATION, "Customer Service Details", technical.toString());
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID: " + id);
+                }
+            } catch (NumberFormatException ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
+            }
+        });
+
+        viewAllButton.setOnAction(e -> {
+            List<Technical> technicals = technicalDAL.getAllTechnicals();
+            if (technicals.isEmpty()) {
+                showAlert(Alert.AlertType.INFORMATION, "View All Technicals",
+                        "No Technical records found.");
+            } else {
+                StringBuilder details = new StringBuilder();
+                technicals.forEach(technical -> details.append(technical).append("\n"));
+                showAlert(Alert.AlertType.INFORMATION, "View All Technicals", details.toString());
+            }
+        });
+
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        vbox.getChildren().addAll(idField, viewByIdButton, viewAllButton, backButton);
+
+        setBackground(vbox);
+
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void deleteTechnical(Stage stage) {
-        Stage deleteStage = new Stage();
-        deleteStage.setTitle("Delete Technical");
-
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.setAlignment(Pos.CENTER);
@@ -337,16 +301,26 @@ public class TechnicalInterface extends Application {
             int id = Integer.parseInt(idField.getText());
             if (technicalDAL.deleteTechnical(id)) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Technical deleted successfully.");
-                deleteStage.close();
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete technical.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete Technical.");
             }
-
         });
 
-        Scene scene = new Scene(vbox, 300, 200);
-        deleteStage.setScene(scene);
-        deleteStage.show();
+        Button backButton = new Button("Back");
+        vbox.getChildren().add(backButton);
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        setBackground(vbox);
+
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void goBack(Stage stage) {
+        MainInterface mainInterface = new MainInterface();
+        mainInterface.start(stage);
     }
 
     private GridPane createFormPane() {
@@ -357,12 +331,23 @@ public class TechnicalInterface extends Application {
         return gridPane;
     }
 
-    private TextField createTextField(GridPane gridPane, String label, int row) {
+    private TextField createTextField(GridPane gridPane, String label, int row, int col) {
         Label lbl = new Label(label);
         TextField textField = new TextField();
-        gridPane.add(lbl, 0, row);
-        gridPane.add(textField, 1, row);
+        gridPane.add(lbl, col * 2, row);
+        gridPane.add(textField, col * 2 + 1, row);
         return textField;
+    }
+
+    private void setBackground(Pane pane) {
+        Image backgroundImage = new Image("file:Resources/background.jpg");
+        BackgroundImage bgImage = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        pane.setBackground(new Background(bgImage));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

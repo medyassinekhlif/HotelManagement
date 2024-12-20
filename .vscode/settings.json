@@ -1,5 +1,4 @@
 
-// Updated settings.json
 {
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",

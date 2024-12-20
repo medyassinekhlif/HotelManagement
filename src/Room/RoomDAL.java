@@ -7,7 +7,7 @@ import Utils.DbConnection;
 
 public class RoomDAL {
     // Add a room to the database
-    public static void addRoom(Room room) throws SQLException {
+    public void addRoom(Room room) throws SQLException {
         String query = "INSERT INTO rooms (roomType, numberOfRooms, pricePerNight, roomImage) VALUES (?, ?, ?, ?)";
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, room.getRoomType().name()); // Set enum name
@@ -23,7 +23,7 @@ public class RoomDAL {
     }
 
     // Update room details in the database
-    public static void updateRoom(Room.RoomType roomType, Room updatedRoom) throws SQLException {
+    public void updateRoom(Room.RoomType roomType, Room updatedRoom) throws SQLException {
         String query = "UPDATE rooms SET numberOfRooms = ?, pricePerNight = ?, roomImage = ? WHERE roomType = ?";
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, updatedRoom.getNumberOfRooms());
@@ -39,7 +39,7 @@ public class RoomDAL {
     }
 
     // Delete a room from the database
-    public static void deleteRoom(Room.RoomType roomType) throws SQLException {
+    public void deleteRoom(Room.RoomType roomType) throws SQLException {
         String query = "DELETE FROM rooms WHERE roomType = ?";
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, roomType.name()); // Use enum name for roomType
@@ -51,7 +51,7 @@ public class RoomDAL {
     }
 
     // Retrieve all rooms from the database
-    public static List<Room> getRooms() throws SQLException {
+    public List<Room> getRooms() throws SQLException {
         List<Room> rooms = new ArrayList<>();
         String query = "SELECT roomType, numberOfRooms, pricePerNight, roomImage FROM rooms";
         try (Connection conn = DbConnection.getConnection();
@@ -75,7 +75,7 @@ public class RoomDAL {
     }
 
     // Retrieve a single room by roomType
-    public static Room getRoomById(Room.RoomType roomType) throws SQLException {
+    public Room getRoomById(Room.RoomType roomType) throws SQLException {
         String query = "SELECT roomType, numberOfRooms, pricePerNight, roomImage FROM rooms WHERE roomType = ?";
         try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, roomType.name()); // Use enum name for roomType

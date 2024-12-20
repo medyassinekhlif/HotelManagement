@@ -1,87 +1,95 @@
 package Staff.Managerial;
 
+import Main.MainInterface;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.util.List;
 
 public class ManagerialInterface extends Application {
 
-    private static final ManagerialDAL ManagerialDAL = new ManagerialDAL();
+    private static final ManagerialDAL managerialDAL = new ManagerialDAL();
+    private Scene initialScene;
+    private static final String stylePath = "file:resources/styles.css";
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Managerial Management System");
+        stage.setTitle("Customer Service Management System");
 
-        VBox mainLayout = new VBox(10);
-        mainLayout.setPadding(new Insets(15));
+        // Set the width and height of the stage
+        stage.setWidth(800);
+        stage.setHeight(600);
 
-        Label title = new Label("Managerial Management System");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        VBox mainLayout = createMainLayout(stage);
 
-        Button addManagerialButton = new Button("Add Managerial");
-        Button viewManagerialByIdButton = new Button("View Managerial by ID");
-        Button viewAllManagerialsButton = new Button("View All Managerials");
-        Button updateManagerialButton = new Button("Update Managerial");
-        Button deleteManagerialButton = new Button("Delete Managerial");
-        Button exitButton = new Button("Exit");
+        // Set the same background as MainInterface
+        setBackground(mainLayout);
 
-        // Event Handlers
-        addManagerialButton.setOnAction(e -> addManagerial(stage));
-        viewManagerialByIdButton.setOnAction(e -> viewManagerialById(stage));
-        viewAllManagerialsButton.setOnAction(e -> viewAllManagerials(stage));
-        updateManagerialButton.setOnAction(e -> updateManagerial(stage));
-        deleteManagerialButton.setOnAction(e -> deleteManagerial(stage));
-        exitButton.setOnAction(e -> stage.close());
-
-        mainLayout.getChildren().addAll(title, addManagerialButton, viewManagerialByIdButton, viewAllManagerialsButton,
-                updateManagerialButton, deleteManagerialButton, exitButton);
-
-        String cssFile = getClass().getResource("/Resources/styles.css").toExternalForm();
-        Scene scene = new Scene(mainLayout, 400, 300);
-        scene.getStylesheets().add(cssFile);
-
-        stage.setScene(scene);
+        initialScene = new Scene(mainLayout);
+        initialScene.getStylesheets().add(stylePath);
+        stage.setScene(initialScene);
         stage.show();
     }
 
-    private void addManagerial(Stage stage) {
-        Stage addStage = new Stage();
-        addStage.setTitle("Add Managerial");
+    private VBox createMainLayout(Stage stage) {
+        VBox mainLayout = new VBox(10);
+        mainLayout.setPadding(new Insets(15));
 
+        Label title = new Label("Customer Service Management System");
+
+        Button addManagerialButton = new Button("Add Customer Service");
+        Button viewManagerialsButton = new Button("View Customer Services");
+        Button updateManagerialButton = new Button("Update Customer Service");
+        Button deleteManagerialButton = new Button("Delete Customer Service");
+        Button backButton = new Button("Back");
+
+        addManagerialButton.setOnAction(e -> addManagerial(stage));
+        viewManagerialsButton.setOnAction(e -> viewManagerials(stage));
+        updateManagerialButton.setOnAction(e -> updateManagerial(stage));
+        deleteManagerialButton.setOnAction(e -> deleteManagerial(stage));
+        backButton.setOnAction(e -> goBack(stage));
+
+        mainLayout.getChildren().addAll(title, addManagerialButton, viewManagerialsButton,
+                updateManagerialButton, deleteManagerialButton, backButton);
+        return mainLayout;
+    }
+
+    private void addManagerial(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        // Create form fields
-        TextField IdField = createTextField(gridPane, "Staff ID:", 0);
-        TextField firstNameField = createTextField(gridPane, "First Name:", 1);
-        TextField lastNameField = createTextField(gridPane, "Last Name:", 2);
-        TextField emailField = createTextField(gridPane, "Email:", 3);
-        TextField phoneNumberField = createTextField(gridPane, "Phone Number:", 4);
-        TextField addressField = createTextField(gridPane, "Address:", 5);
-        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 6);
-        TextField salaryField = createTextField(gridPane, "Salary:", 7);
-        TextField statusField = createTextField(gridPane, "Status:", 8);
-        TextField departmentField = createTextField(gridPane, "Department:", 9);
-        TextField jobTitleField = createTextField(gridPane, "Job Title:", 10);
-        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 11);
-        TextField officeLocation = createTextField(gridPane, "Managerial Office Location:", 12);
-        TextField teamSize = createTextField(gridPane, "Team Size:", 13);
-        TextField reportsTo = createTextField(gridPane, "Reports To:", 14);
+        TextField staffIdField = createTextField(gridPane, "Staff ID:", 0, 0);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 1);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 0);
+        TextField emailField = createTextField(gridPane, "Email:", 1, 1);
+        TextField phoneNumberField = createTextField(gridPane, "Phone Number:", 2, 0);
+        TextField addressField = createTextField(gridPane, "Address:", 2, 1);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 0);
+        TextField salaryField = createTextField(gridPane, "Salary:", 3, 1);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 0);
+        TextField departmentField = createTextField(gridPane, "Department:", 4, 1);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 0);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 1);
+        TextField officeLocationField = createTextField(gridPane, "Office Location:", 6, 0);
+        TextField teamSizeField = createTextField(gridPane, "Team Size:", 6, 1);
+        TextField reportsToField = createTextField(gridPane, "Reports To:", 7, 0);
 
-        // Submit button
+        Button backButton = new Button("Back");
+        gridPane.add(backButton, 0, 12);
         Button submitButton = new Button("Submit");
-        gridPane.add(submitButton, 1, 16);
+        gridPane.add(submitButton, 1, 12);
+
+        backButton.setOnAction(e -> stage.setScene(initialScene));
 
         submitButton.setOnAction(e -> {
             try {
                 Managerial managerial = new Managerial();
-                managerial.setId(Integer.parseInt(IdField.getText()));
+                managerial.setId(Integer.parseInt(staffIdField.getText()));
                 managerial.setFirstName(firstNameField.getText());
                 managerial.setLastName(lastNameField.getText());
                 managerial.setEmail(emailField.getText());
@@ -93,69 +101,31 @@ public class ManagerialInterface extends Application {
                 managerial.setDepartment(departmentField.getText());
                 managerial.setJobTitle(jobTitleField.getText());
                 managerial.setWorkingHours(workingHoursField.getText());
-                managerial.setOfficeLocation(officeLocation.getText());
-                managerial.setTeamSize(Integer.parseInt(teamSize.getText()));
-                managerial.setReportsTo(reportsTo.getText());
+                managerial.setOfficeLocation(officeLocationField.getText());
+                managerial.setTeamSize(Integer.parseInt(teamSizeField.getText()));
+                managerial.setReportsTo(reportsToField.getText());
 
-                if (ManagerialDAL.insertManagerial(managerial)) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Managerial added successfully.");
-                    addStage.close();
+                if (managerialDAL.insertManagerial(managerial)) {
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service added successfully.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add managerial.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Customer Service.");
                 }
             } catch (Exception ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid input: " + ex.getMessage());
             }
         });
 
-        Scene scene = new Scene(gridPane, 600, 600);
-        addStage.setScene(scene);
-        addStage.show();
-    }
+        setBackground(gridPane);
 
-    private void viewManagerialById(Stage stage) {
-        TextInputDialog inputDialog = new TextInputDialog();
-        inputDialog.setTitle("View Managerial by ID");
-        inputDialog.setHeaderText("Enter Managerial ID:");
-        inputDialog.setContentText("ID:");
-
-        inputDialog.showAndWait().ifPresent(idStr -> {
-            try {
-                int id = Integer.parseInt(idStr);
-                Managerial managerial = ManagerialDAL.getManagerialById(id);
-                if (managerial != null) {
-                    showAlert(Alert.AlertType.INFORMATION, "Managerial Details", managerial.toString());
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "No managerial found with ID: " + id);
-                }
-            } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
-            }
-        });
-    }
-
-    private void viewAllManagerials(Stage stage) {
-        // Implementation for viewing all managerials
-        List<Managerial> managerials = ManagerialDAL.getAllManagerials();
-        if (managerials.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "View All Managerials", "No Managerial records found.");
-        } else {
-            StringBuilder details = new StringBuilder();
-            managerials.forEach(managerial -> details.append(managerial).append("\n"));
-            showAlert(Alert.AlertType.INFORMATION, "View All Managerials", details.toString());
-        }
+        Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void updateManagerial(Stage stage) {
-        Stage updateStage = new Stage();
-        updateStage.setTitle("Update Managerial");
+        GridPane gridPane = createFormPane();
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-
-        // Labels and Input Fields
         Label idLabel = new Label("Managerial ID:");
         TextField idField = new TextField();
         gridPane.add(idLabel, 0, 0);
@@ -164,82 +134,30 @@ public class ManagerialInterface extends Application {
         Button fetchButton = new Button("Fetch Details");
         gridPane.add(fetchButton, 2, 0);
 
-        Label firstNameLabel = new Label("First Name:");
-        TextField firstNameField = new TextField();
-        gridPane.add(firstNameLabel, 0, 1);
-        gridPane.add(firstNameField, 1, 1);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 1, 0);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 1);
+        TextField emailField = createTextField(gridPane, "Email:", 2, 0);
+        TextField phoneField = createTextField(gridPane, "Phone Number:", 2, 1);
+        TextField addressField = createTextField(gridPane, "Address:", 3, 0);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 1);
+        TextField salaryField = createTextField(gridPane, "Salary:", 4, 0);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 1);
+        TextField departmentField = createTextField(gridPane, "Department:", 5, 0);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 1);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 6, 0);
+        TextField customerSatisfactionScoreField = createTextField(gridPane, "Customer Satisfaction Score:", 6, 1);
+        TextField officeLocationField = createTextField(gridPane, "Languages Spoken:", 7, 0);
+        TextField teamSizeField = createTextField(gridPane, "teamSize:", 7, 1);
+        TextField reportsToField = createTextField(gridPane, "Received Feedback:", 8, 0);
 
-        Label lastNameLabel = new Label("Last Name:");
-        TextField lastNameField = new TextField();
-        gridPane.add(lastNameLabel, 0, 2);
-        gridPane.add(lastNameField, 1, 2);
-
-        Label emailLabel = new Label("Email:");
-        TextField emailField = new TextField();
-        gridPane.add(emailLabel, 0, 3);
-        gridPane.add(emailField, 1, 3);
-
-        Label phoneLabel = new Label("Phone Number:");
-        TextField phoneField = new TextField();
-        gridPane.add(phoneLabel, 0, 4);
-        gridPane.add(phoneField, 1, 4);
-
-        Label addressLabel = new Label("Address:");
-        TextField addressField = new TextField();
-        gridPane.add(addressLabel, 0, 5);
-        gridPane.add(addressField, 1, 5);
-
-        Label hireDateLabel = new Label("Hire Date (yyyy-mm-dd):");
-        TextField hireDateField = new TextField();
-        gridPane.add(hireDateLabel, 0, 6);
-        gridPane.add(hireDateField, 1, 6);
-
-        Label salaryLabel = new Label("Salary:");
-        TextField salaryField = new TextField();
-        gridPane.add(salaryLabel, 0, 7);
-        gridPane.add(salaryField, 1, 7);
-
-        Label statusLabel = new Label("Status:");
-        TextField statusField = new TextField();
-        gridPane.add(statusLabel, 0, 8);
-        gridPane.add(statusField, 1, 8);
-
-        Label departmentLabel = new Label("Department:");
-        TextField departmentField = new TextField();
-        gridPane.add(departmentLabel, 0, 9);
-        gridPane.add(departmentField, 1, 9);
-
-        Label jobTitleLabel = new Label("Job Title:");
-        TextField jobTitleField = new TextField();
-        gridPane.add(jobTitleLabel, 0, 10);
-        gridPane.add(jobTitleField, 1, 10);
-
-        Label workingHoursLabel = new Label("Working Hours:");
-        TextField workingHoursField = new TextField();
-        gridPane.add(workingHoursLabel, 0, 11);
-        gridPane.add(workingHoursField, 1, 11);
-
-        Label officeLocationLabel = new Label("Office Location:");
-        TextField officeLocationField = new TextField();
-        gridPane.add(officeLocationLabel, 0, 12);
-        gridPane.add(officeLocationField, 1, 12);
-
-        Label teamSizeLabel = new Label("Team Size:");
-        TextField teamSizeField = new TextField();
-        gridPane.add(teamSizeLabel, 0, 13);
-        gridPane.add(teamSizeField, 1, 13);
-
-        Label reportsToLabel = new Label("ReportsTo :");
-        TextField reportsToField = new TextField();
-        gridPane.add(reportsToLabel, 0, 14);
-        gridPane.add(reportsToField, 1, 14);
-
+        Button backButton = new Button("Back");
+        gridPane.add(backButton, 0, 12);
         Button updateButton = new Button("Update");
-        gridPane.add(updateButton, 0, 16, 2, 1);
+        gridPane.add(updateButton, 1, 12);
 
         fetchButton.setOnAction(e -> {
             int id = Integer.parseInt(idField.getText());
-            Managerial managerial = ManagerialDAL.getManagerialById(id);
+            Managerial managerial = managerialDAL.getManagerialById(id);
             if (managerial != null) {
                 firstNameField.setText(managerial.getFirstName());
                 lastNameField.setText(managerial.getLastName());
@@ -254,9 +172,9 @@ public class ManagerialInterface extends Application {
                 workingHoursField.setText(managerial.getWorkingHours());
                 officeLocationField.setText(managerial.getOfficeLocation());
                 teamSizeField.setText(Integer.toString(managerial.getTeamSize()));
-                reportsToField.setText(managerial.getReportsTo());
+                reportsToField.setText(managerial.getReportsTo().toString());
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "No managerial found with ID " + id);
+                showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID " + id);
             }
         });
 
@@ -277,7 +195,7 @@ public class ManagerialInterface extends Application {
             String teamSize = teamSizeField.getText();
             String reportsTo = reportsToField.getText();
 
-            Managerial managerial = ManagerialDAL.getManagerialById(id);
+            Managerial managerial = managerialDAL.getManagerialById(id);
             if (managerial != null) {
                 managerial.setFirstName(firstName);
                 managerial.setLastName(lastName);
@@ -294,24 +212,75 @@ public class ManagerialInterface extends Application {
                 managerial.setTeamSize(Integer.parseInt(teamSize));
                 managerial.setReportsTo(reportsTo);
 
-                if (ManagerialDAL.updateManagerial(managerial)) {
+                if (managerialDAL.updateManagerial(managerial)) {
                     showAlert(Alert.AlertType.INFORMATION, "Success", "Managerial updated successfully.");
-                    updateStage.close();
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update managerial.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update Managerial.");
                 }
             }
         });
 
-        Scene scene = new Scene(gridPane, 500, 400);
-        updateStage.setScene(scene);
-        updateStage.show();
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        setBackground(gridPane);
+
+        Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void viewManagerials(Stage stage) {
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+        vbox.setAlignment(Pos.CENTER);
+
+        TextField idField = new TextField();
+        idField.setPromptText("Enter Customer Service ID");
+
+        Button viewByIdButton = new Button("View by ID");
+        Button viewAllButton = new Button("View All");
+        Button backButton = new Button("Back");
+
+        viewByIdButton.setOnAction(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                Managerial managerial = managerialDAL.getManagerialById(id);
+                if (managerial != null) {
+                    showAlert(Alert.AlertType.INFORMATION, "Customer Service Details", managerial.toString());
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID: " + id);
+                }
+            } catch (NumberFormatException ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
+            }
+        });
+
+        viewAllButton.setOnAction(e -> {
+            List<Managerial> managerials = managerialDAL.getAllManagerials();
+            if (managerials.isEmpty()) {
+                showAlert(Alert.AlertType.INFORMATION, "View All Managerials",
+                        "No Managerial records found.");
+            } else {
+                StringBuilder details = new StringBuilder();
+                managerials.forEach(managerial -> details.append(managerial).append("\n"));
+                showAlert(Alert.AlertType.INFORMATION, "View All Managerials", details.toString());
+            }
+        });
+
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        vbox.getChildren().addAll(idField, viewByIdButton, viewAllButton, backButton);
+
+        setBackground(vbox);
+
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void deleteManagerial(Stage stage) {
-        Stage deleteStage = new Stage();
-        deleteStage.setTitle("Delete Managerial");
-
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.setAlignment(Pos.CENTER);
@@ -324,18 +293,28 @@ public class ManagerialInterface extends Application {
 
         deleteButton.setOnAction(e -> {
             int id = Integer.parseInt(idField.getText());
-            if (ManagerialDAL.deleteManagerial(id)) {
+            if (managerialDAL.deleteManagerial(id)) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Managerial deleted successfully.");
-                deleteStage.close();
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete Managerial.");
             }
-
         });
 
-        Scene scene = new Scene(vbox, 300, 200);
-        deleteStage.setScene(scene);
-        deleteStage.show();
+        Button backButton = new Button("Back");
+        vbox.getChildren().add(backButton);
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        setBackground(vbox);
+
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void goBack(Stage stage) {
+        MainInterface mainInterface = new MainInterface();
+        mainInterface.start(stage);
     }
 
     private GridPane createFormPane() {
@@ -346,12 +325,23 @@ public class ManagerialInterface extends Application {
         return gridPane;
     }
 
-    private TextField createTextField(GridPane gridPane, String label, int row) {
+    private TextField createTextField(GridPane gridPane, String label, int row, int col) {
         Label lbl = new Label(label);
         TextField textField = new TextField();
-        gridPane.add(lbl, 0, row);
-        gridPane.add(textField, 1, row);
+        gridPane.add(lbl, col * 2, row);
+        gridPane.add(textField, col * 2 + 1, row);
         return textField;
+    }
+
+    private void setBackground(Pane pane) {
+        Image backgroundImage = new Image("file:Resources/background.jpg");
+        BackgroundImage bgImage = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        pane.setBackground(new Background(bgImage));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

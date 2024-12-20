@@ -1,85 +1,92 @@
 package Staff.Operational;
 
+import Main.MainInterface;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.util.List;
 
 public class OperationalInterface extends Application {
 
     private static final OperationalDAL operationalDAL = new OperationalDAL();
+    private Scene initialScene;
+    private static final String stylePath = "file:resources/styles.css";
 
     @Override
     public void start(Stage stage) {
         stage.setTitle("Operational Management System");
 
+        // Set the width and height of the stage
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        VBox mainLayout = createMainLayout(stage);
+
+        // Set the same background as MainInterface
+        setBackground(mainLayout);
+
+        initialScene = new Scene(mainLayout);
+        initialScene.getStylesheets().add(stylePath);
+        stage.setScene(initialScene);
+        stage.show();
+    }
+
+    private VBox createMainLayout(Stage stage) {
         VBox mainLayout = new VBox(10);
         mainLayout.setPadding(new Insets(15));
 
         Label title = new Label("Operational Management System");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         Button addOperationalButton = new Button("Add Operational");
-        Button viewOperationalByIdButton = new Button("View Operational by ID");
-        Button viewAllOperationalsButton = new Button("View All Operationals");
+        Button viewOperationalsButton = new Button("View Operationals");
         Button updateOperationalButton = new Button("Update Operational");
         Button deleteOperationalButton = new Button("Delete Operational");
-        Button exitButton = new Button("Exit");
+        Button backButton = new Button("Back");
 
-        // Event Handlers
         addOperationalButton.setOnAction(e -> addOperational(stage));
-        viewOperationalByIdButton.setOnAction(e -> viewOperationalById(stage));
-        viewAllOperationalsButton.setOnAction(e -> viewAllOperationals(stage));
+        viewOperationalsButton.setOnAction(e -> viewOperationals(stage));
         updateOperationalButton.setOnAction(e -> updateOperational(stage));
         deleteOperationalButton.setOnAction(e -> deleteOperational(stage));
-        exitButton.setOnAction(e -> stage.close());
+        backButton.setOnAction(e -> goBack(stage));
 
-        mainLayout.getChildren().addAll(title, addOperationalButton, viewOperationalByIdButton,
-                viewAllOperationalsButton,
-                updateOperationalButton, deleteOperationalButton, exitButton);
-
-        String cssFile = getClass().getResource("/Resources/styles.css").toExternalForm();
-        Scene scene = new Scene(mainLayout, 400, 300);
-        scene.getStylesheets().add(cssFile);
-
-        stage.setScene(scene);
-        stage.show();
+        mainLayout.getChildren().addAll(title, addOperationalButton, viewOperationalsButton,
+                updateOperationalButton, deleteOperationalButton, backButton);
+        return mainLayout;
     }
 
     private void addOperational(Stage stage) {
-        Stage addStage = new Stage();
-        addStage.setTitle("Add Operational");
-
         GridPane gridPane = createFormPane();
 
-        // Create form fields
-        TextField staffIdField = createTextField(gridPane, "Staff ID:", 0);
-        TextField firstNameField = createTextField(gridPane, "First Name:", 1);
-        TextField lastNameField = createTextField(gridPane, "Last Name:", 2);
-        TextField emailField = createTextField(gridPane, "Email:", 3);
-        TextField phoneNumberField = createTextField(gridPane, "Phone Number:", 4);
-        TextField addressField = createTextField(gridPane, "Address:", 5);
-        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 6);
-        TextField salaryField = createTextField(gridPane, "Salary:", 7);
-        TextField statusField = createTextField(gridPane, "Status:", 8);
-        TextField departmentField = createTextField(gridPane, "Department:", 9);
-        TextField jobTitleField = createTextField(gridPane, "Job Title:", 10);
-        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 11);
-        TextField shiftTypeField = createTextField(gridPane, "Shift Type:", 12);
-        TextField locationField = createTextField(gridPane, "Location:", 13);
-        TextField responsibilityLevelField = createTextField(gridPane, "Responsibility Level:", 14);
-        TextField taskCountField = createTextField(gridPane, "Task Count:", 15);
-        TextField performanceRatingField = createTextField(gridPane, "Performance Rating:", 16);
+        TextField staffIdField = createTextField(gridPane, "Staff ID:", 0, 0);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 1);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 0);
+        TextField emailField = createTextField(gridPane, "Email:", 1, 1);
+        TextField phoneNumberField = createTextField(gridPane, "Phone Number:", 2, 0);
+        TextField addressField = createTextField(gridPane, "Address:", 2, 1);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 0);
+        TextField salaryField = createTextField(gridPane, "Salary:", 3, 1);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 0);
+        TextField departmentField = createTextField(gridPane, "Department:", 4, 1);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 0);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 1);
+        TextField shiftTypeField = createTextField(gridPane, "Shift Type:", 6, 0);
+        TextField locationField = createTextField(gridPane, "Location:", 6, 1);
+        TextField responsibilityLevelField = createTextField(gridPane, "Responsibility Level:", 7, 0);
+        TextField taskCountField = createTextField(gridPane, "Task Count:", 7, 1);
+        TextField performanceRatingField = createTextField(gridPane, "Performance Rating:", 8, 0);
 
-        // Submit button
+        Button backButton = new Button("Back");
+        gridPane.add(backButton, 0, 12);
         Button submitButton = new Button("Submit");
-        gridPane.add(submitButton, 1, 17);
+        gridPane.add(submitButton, 1, 12);
+
+        backButton.setOnAction(e -> stage.setScene(initialScene));
 
         submitButton.setOnAction(e -> {
             try {
@@ -99,68 +106,31 @@ public class OperationalInterface extends Application {
                 operational.setShiftType(shiftTypeField.getText());
                 operational.setLocation(locationField.getText());
                 operational.setResponsibilityLevel(responsibilityLevelField.getText());
+
                 operational.setTaskCount(Integer.parseInt(taskCountField.getText()));
                 operational.setPerformanceRating(new java.math.BigDecimal(performanceRatingField.getText()));
 
                 if (operationalDAL.insertOperational(operational)) {
                     showAlert(Alert.AlertType.INFORMATION, "Success", "Operational added successfully.");
-                    addStage.close();
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add operational.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Operational.");
                 }
             } catch (Exception ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid input: " + ex.getMessage());
             }
         });
 
-        Scene scene = new Scene(gridPane, 600, 600);
-        addStage.setScene(scene);
-        addStage.show();
-    }
+        setBackground(gridPane);
 
-    private void viewOperationalById(Stage stage) {
-        TextInputDialog inputDialog = new TextInputDialog();
-        inputDialog.setTitle("View Operational by ID");
-        inputDialog.setHeaderText("Enter Operational ID:");
-        inputDialog.setContentText("ID:");
-
-        inputDialog.showAndWait().ifPresent(idStr -> {
-            try {
-                int id = Integer.parseInt(idStr);
-                Operational operational = operationalDAL.getOperationalById(id);
-                if (operational != null) {
-                    showAlert(Alert.AlertType.INFORMATION, "Operational Details", operational.toString());
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "No operational found with ID: " + id);
-                }
-            } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
-            }
-        });
-    }
-
-    private void viewAllOperationals(Stage stage) {
-        // Implementation for viewing all operationals
-        List<Operational> operationals = operationalDAL.getAllOperationals();
-        if (operationals.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "View All Operationals", "No operational records found.");
-        } else {
-            StringBuilder details = new StringBuilder();
-            operationals.forEach(operational -> details.append(operational).append("\n"));
-            showAlert(Alert.AlertType.INFORMATION, "View All Operationals", details.toString());
-        }
+        Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void updateOperational(Stage stage) {
-        Stage updateStage = new Stage();
-        updateStage.setTitle("Update Operational");
+        GridPane gridPane = createFormPane();
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-
-        // Labels and Input Fields
         Label idLabel = new Label("Operational ID:");
         TextField idField = new TextField();
         gridPane.add(idLabel, 0, 0);
@@ -169,88 +139,27 @@ public class OperationalInterface extends Application {
         Button fetchButton = new Button("Fetch Details");
         gridPane.add(fetchButton, 2, 0);
 
-        Label firstNameLabel = new Label("First Name:");
-        TextField firstNameField = new TextField();
-        gridPane.add(firstNameLabel, 0, 1);
-        gridPane.add(firstNameField, 1, 1);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 0);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 0, 1);
+        TextField emailField = createTextField(gridPane, "Email:", 1, 0);
+        TextField phoneField = createTextField(gridPane, "Phone Number:", 1, 1);
+        TextField addressField = createTextField(gridPane, "Address:", 2, 0);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 2, 1);
+        TextField salaryField = createTextField(gridPane, "Salary:", 3, 0);
+        TextField statusField = createTextField(gridPane, "Status:", 3, 1);
+        TextField departmentField = createTextField(gridPane, "Department:", 4, 0);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 4, 1);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 0);
+        TextField shiftTypeField = createTextField(gridPane, "Shit Type:", 5, 1);
+        TextField locationField = createTextField(gridPane, "Location:", 6, 0);
+        TextField responsibilityLevelField = createTextField(gridPane, "Responsibility Level:", 6, 1);
+        TextField taskCountField = createTextField(gridPane, "taskCount:", 7, 1);
+        TextField performanceRatingField = createTextField(gridPane, "Performance Rating:", 8, 0);
 
-        Label lastNameLabel = new Label("Last Name:");
-        TextField lastNameField = new TextField();
-        gridPane.add(lastNameLabel, 0, 2);
-        gridPane.add(lastNameField, 1, 2);
-
-        Label emailLabel = new Label("Email:");
-        TextField emailField = new TextField();
-        gridPane.add(emailLabel, 0, 3);
-        gridPane.add(emailField, 1, 3);
-
-        Label phoneLabel = new Label("Phone Number:");
-        TextField phoneField = new TextField();
-        gridPane.add(phoneLabel, 0, 4);
-        gridPane.add(phoneField, 1, 4);
-
-        Label addressLabel = new Label("Address:");
-        TextField addressField = new TextField();
-        gridPane.add(addressLabel, 0, 5);
-        gridPane.add(addressField, 1, 5);
-
-        Label hireDateLabel = new Label("Hire Date (yyyy-mm-dd):");
-        TextField hireDateField = new TextField();
-        gridPane.add(hireDateLabel, 0, 6);
-        gridPane.add(hireDateField, 1, 6);
-
-        Label salaryLabel = new Label("Salary:");
-        TextField salaryField = new TextField();
-        gridPane.add(salaryLabel, 0, 7);
-        gridPane.add(salaryField, 1, 7);
-
-        Label statusLabel = new Label("Status:");
-        TextField statusField = new TextField();
-        gridPane.add(statusLabel, 0, 8);
-        gridPane.add(statusField, 1, 8);
-
-        Label departmentLabel = new Label("Department:");
-        TextField departmentField = new TextField();
-        gridPane.add(departmentLabel, 0, 9);
-        gridPane.add(departmentField, 1, 9);
-
-        Label jobTitleLabel = new Label("Job Title:");
-        TextField jobTitleField = new TextField();
-        gridPane.add(jobTitleLabel, 0, 10);
-        gridPane.add(jobTitleField, 1, 10);
-
-        Label workingHoursLabel = new Label("Working Hours:");
-        TextField workingHoursField = new TextField();
-        gridPane.add(workingHoursLabel, 0, 11);
-        gridPane.add(workingHoursField, 1, 11);
-
-        Label shiftTypeLabel = new Label("Operational Shift Type:");
-        TextField shiftTypeField = new TextField();
-        gridPane.add(shiftTypeLabel, 0, 12);
-        gridPane.add(shiftTypeField, 1, 12);
-
-        Label locationLabel = new Label("Location:");
-        TextField locationField = new TextField();
-        gridPane.add(locationLabel, 0, 13);
-        gridPane.add(locationField, 1, 13);
-
-        Label responsibilityLevelLabel = new Label("Responsibility Level:");
-        TextField responsibilityLevelField = new TextField();
-        gridPane.add(responsibilityLevelLabel, 0, 14);
-        gridPane.add(responsibilityLevelField, 1, 14);
-
-        Label taskCountLabel = new Label("Task Count:");
-        TextField taskCountField = new TextField();
-        gridPane.add(taskCountLabel, 0, 15);
-        gridPane.add(taskCountField, 1, 15);
-
-        Label performanceRatingLabel = new Label("Performance Rating:");
-        TextField performanceRatingField = new TextField();
-        gridPane.add(performanceRatingLabel, 0, 16);
-        gridPane.add(performanceRatingField, 1, 16);
-
+        Button backButton = new Button("Back");
+        gridPane.add(backButton, 0, 12);
         Button updateButton = new Button("Update");
-        gridPane.add(updateButton, 0, 16, 2, 1);
+        gridPane.add(updateButton, 1, 12);
 
         fetchButton.setOnAction(e -> {
             int id = Integer.parseInt(idField.getText());
@@ -269,12 +178,12 @@ public class OperationalInterface extends Application {
                 workingHoursField.setText(operational.getWorkingHours());
                 shiftTypeField.setText(operational.getShiftType());
                 locationField.setText(operational.getLocation());
-                locationField.setText(operational.getResponsibilityLevel());
+                responsibilityLevelField.setText(operational.getResponsibilityLevel());
+
                 taskCountField.setText(Integer.toString(operational.getTaskCount()));
                 performanceRatingField.setText(operational.getPerformanceRating().toString());
-
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "No operational found with ID " + id);
+                showAlert(Alert.AlertType.ERROR, "Error", "No Operational found with ID " + id);
             }
         });
 
@@ -293,7 +202,7 @@ public class OperationalInterface extends Application {
             String workingHours = workingHoursField.getText();
             String shiftType = shiftTypeField.getText();
             String location = locationField.getText();
-            String responsibilityLevel = locationField.getText();
+            String responsibilityLevel = responsibilityLevelField.getText();
             String taskCount = taskCountField.getText();
             String performanceRating = performanceRatingField.getText();
 
@@ -318,22 +227,73 @@ public class OperationalInterface extends Application {
 
                 if (operationalDAL.updateOperational(operational)) {
                     showAlert(Alert.AlertType.INFORMATION, "Success", "Operational updated successfully.");
-                    updateStage.close();
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update operational.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update Operational.");
                 }
             }
         });
 
-        Scene scene = new Scene(gridPane, 500, 400);
-        updateStage.setScene(scene);
-        updateStage.show();
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        setBackground(gridPane);
+
+        Scene scene = new Scene(gridPane);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void viewOperationals(Stage stage) {
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+        vbox.setAlignment(Pos.CENTER);
+
+        TextField idField = new TextField();
+        idField.setPromptText("Enter Operational ID");
+
+        Button viewByIdButton = new Button("View by ID");
+        Button viewAllButton = new Button("View All");
+        Button backButton = new Button("Back");
+
+        viewByIdButton.setOnAction(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                Operational operational = operationalDAL.getOperationalById(id);
+                if (operational != null) {
+                    showAlert(Alert.AlertType.INFORMATION, "Operational Details", operational.toString());
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "No Operational found with ID: " + id);
+                }
+            } catch (NumberFormatException ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
+            }
+        });
+
+        viewAllButton.setOnAction(e -> {
+            List<Operational> operationals = operationalDAL.getAllOperationals();
+            if (operationals.isEmpty()) {
+                showAlert(Alert.AlertType.INFORMATION, "View All Operationals",
+                        "No Operational records found.");
+            } else {
+                StringBuilder details = new StringBuilder();
+                operationals.forEach(operational -> details.append(operational).append("\n"));
+                showAlert(Alert.AlertType.INFORMATION, "View All Operationals", details.toString());
+            }
+        });
+
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        vbox.getChildren().addAll(idField, viewByIdButton, viewAllButton, backButton);
+
+        setBackground(vbox);
+
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void deleteOperational(Stage stage) {
-        Stage deleteStage = new Stage();
-        deleteStage.setTitle("Delete Operational");
-
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.setAlignment(Pos.CENTER);
@@ -348,16 +308,26 @@ public class OperationalInterface extends Application {
             int id = Integer.parseInt(idField.getText());
             if (operationalDAL.deleteOperational(id)) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Operational deleted successfully.");
-                deleteStage.close();
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete operational.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete Operational.");
             }
-
         });
 
-        Scene scene = new Scene(vbox, 300, 200);
-        deleteStage.setScene(scene);
-        deleteStage.show();
+        Button backButton = new Button("Back");
+        vbox.getChildren().add(backButton);
+        backButton.setOnAction(e -> stage.setScene(initialScene));
+
+        setBackground(vbox);
+
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(stylePath);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void goBack(Stage stage) {
+        MainInterface mainInterface = new MainInterface();
+        mainInterface.start(stage);
     }
 
     private GridPane createFormPane() {
@@ -368,12 +338,23 @@ public class OperationalInterface extends Application {
         return gridPane;
     }
 
-    private TextField createTextField(GridPane gridPane, String label, int row) {
+    private TextField createTextField(GridPane gridPane, String label, int row, int col) {
         Label lbl = new Label(label);
         TextField textField = new TextField();
-        gridPane.add(lbl, 0, row);
-        gridPane.add(textField, 1, row);
+        gridPane.add(lbl, col * 2, row);
+        gridPane.add(textField, col * 2 + 1, row);
         return textField;
+    }
+
+    private void setBackground(Pane pane) {
+        Image backgroundImage = new Image("file:Resources/background.jpg");
+        BackgroundImage bgImage = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        pane.setBackground(new Background(bgImage));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
