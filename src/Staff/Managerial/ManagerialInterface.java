@@ -1,7 +1,6 @@
 package Staff.Managerial;
 
 import Main.MainInterface;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,15 +19,12 @@ public class ManagerialInterface extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Customer Service Management System");
+        stage.setTitle("Managerial Management System");
 
-        // Set the width and height of the stage
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1000);
+        stage.setHeight(700);
 
         VBox mainLayout = createMainLayout(stage);
-
-        // Set the same background as MainInterface
         setBackground(mainLayout);
 
         initialScene = new Scene(mainLayout);
@@ -41,12 +37,12 @@ public class ManagerialInterface extends Application {
         VBox mainLayout = new VBox(10);
         mainLayout.setPadding(new Insets(15));
 
-        Label title = new Label("Customer Service Management System");
+        Label title = new Label("Managerial Management System");
 
-        Button addManagerialButton = new Button("Add Customer Service");
-        Button viewManagerialsButton = new Button("View Customer Services");
-        Button updateManagerialButton = new Button("Update Customer Service");
-        Button deleteManagerialButton = new Button("Delete Customer Service");
+        Button addManagerialButton = new Button("Add Managerial");
+        Button viewManagerialsButton = new Button("View Managerials");
+        Button updateManagerialButton = new Button("Update Managerial");
+        Button deleteManagerialButton = new Button("Delete Managerial");
         Button backButton = new Button("Back");
 
         addManagerialButton.setOnAction(e -> addManagerial(stage));
@@ -106,9 +102,9 @@ public class ManagerialInterface extends Application {
                 managerial.setReportsTo(reportsToField.getText());
 
                 if (managerialDAL.insertManagerial(managerial)) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service added successfully.");
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Managerial added successfully.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Customer Service.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Managerial.");
                 }
             } catch (Exception ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid input: " + ex.getMessage());
@@ -126,13 +122,10 @@ public class ManagerialInterface extends Application {
     private void updateManagerial(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        Label idLabel = new Label("Managerial ID:");
-        TextField idField = new TextField();
-        gridPane.add(idLabel, 0, 0);
-        gridPane.add(idField, 1, 0);
+        TextField idField = createTextField(gridPane, "ID:", 0, 0);
 
         Button fetchButton = new Button("Fetch Details");
-        gridPane.add(fetchButton, 2, 0);
+        gridPane.add(fetchButton, 3, 12);
 
         TextField firstNameField = createTextField(gridPane, "First Name:", 1, 0);
         TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 1);
@@ -145,10 +138,9 @@ public class ManagerialInterface extends Application {
         TextField departmentField = createTextField(gridPane, "Department:", 5, 0);
         TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 1);
         TextField workingHoursField = createTextField(gridPane, "Working Hours:", 6, 0);
-        TextField customerSatisfactionScoreField = createTextField(gridPane, "Customer Satisfaction Score:", 6, 1);
-        TextField officeLocationField = createTextField(gridPane, "Languages Spoken:", 7, 0);
-        TextField teamSizeField = createTextField(gridPane, "teamSize:", 7, 1);
-        TextField reportsToField = createTextField(gridPane, "Received Feedback:", 8, 0);
+        TextField officeLocationField = createTextField(gridPane, "Office Location:", 6, 1);
+        TextField teamSizeField = createTextField(gridPane, "Team Size:", 7, 0);
+        TextField reportsToField = createTextField(gridPane, "Reports To:", 7, 1);
 
         Button backButton = new Button("Back");
         gridPane.add(backButton, 0, 12);
@@ -172,9 +164,9 @@ public class ManagerialInterface extends Application {
                 workingHoursField.setText(managerial.getWorkingHours());
                 officeLocationField.setText(managerial.getOfficeLocation());
                 teamSizeField.setText(Integer.toString(managerial.getTeamSize()));
-                reportsToField.setText(managerial.getReportsTo().toString());
+                reportsToField.setText(managerial.getReportsTo());
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID " + id);
+                showAlert(Alert.AlertType.ERROR, "Error", "No Managerial found with ID " + id);
             }
         });
 
@@ -236,7 +228,7 @@ public class ManagerialInterface extends Application {
         vbox.setAlignment(Pos.CENTER);
 
         TextField idField = new TextField();
-        idField.setPromptText("Enter Customer Service ID");
+        idField.setPromptText("Enter Managerial ID");
 
         Button viewByIdButton = new Button("View by ID");
         Button viewAllButton = new Button("View All");
@@ -247,9 +239,9 @@ public class ManagerialInterface extends Application {
                 int id = Integer.parseInt(idField.getText());
                 Managerial managerial = managerialDAL.getManagerialById(id);
                 if (managerial != null) {
-                    showAlert(Alert.AlertType.INFORMATION, "Customer Service Details", managerial.toString());
+                    showAlert(Alert.AlertType.INFORMATION, "Managerial Details", managerial.toString());
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID: " + id);
+                    showAlert(Alert.AlertType.ERROR, "Error", "No Managerial found with ID: " + id);
                 }
             } catch (NumberFormatException ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
@@ -322,6 +314,19 @@ public class ManagerialInterface extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10));
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col4 = new ColumnConstraints();
+
+        col1.setPercentWidth(25);
+        col2.setPercentWidth(25);
+        col3.setPercentWidth(25);
+        col4.setPercentWidth(25);
+
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
+
         return gridPane;
     }
 
@@ -330,6 +335,7 @@ public class ManagerialInterface extends Application {
         TextField textField = new TextField();
         gridPane.add(lbl, col * 2, row);
         gridPane.add(textField, col * 2 + 1, row);
+        GridPane.setHgrow(textField, Priority.ALWAYS);
         return textField;
     }
 

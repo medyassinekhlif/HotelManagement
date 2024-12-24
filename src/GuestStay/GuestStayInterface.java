@@ -26,13 +26,11 @@ public class GuestStayInterface extends Application {
     public void start(Stage stage) {
         stage.setTitle("Customer Service Management System");
 
-        // Set the width and height of the stage
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1000);
+        stage.setHeight(700);
 
         VBox mainLayout = createMainLayout(stage);
 
-        // Set the same background as MainInterface
         setBackground(mainLayout);
 
         initialScene = new Scene(mainLayout);
@@ -110,7 +108,7 @@ public class GuestStayInterface extends Application {
             }
         });
 
-        Scene scene = new Scene(gridPane, 600, 400);
+        Scene scene = new Scene(gridPane);
         scene.getStylesheets().add(stylePath);
         stage.setScene(scene);
         stage.show();
@@ -189,7 +187,7 @@ public class GuestStayInterface extends Application {
 
         backButton.setOnAction(e -> stage.setScene(initialScene));
 
-        Scene scene = new Scene(gridPane, 600, 400);
+        Scene scene = new Scene(gridPane);
         scene.getStylesheets().add(stylePath);
         stage.setScene(scene);
         stage.show();
@@ -241,7 +239,7 @@ public class GuestStayInterface extends Application {
 
         vbox.getChildren().addAll(idField, viewByIdButton, viewAllButton, backButton);
 
-        Scene scene = new Scene(vbox, 600, 400);
+        Scene scene = new Scene(vbox, 1000, 700);
         scene.getStylesheets().add(stylePath);
         stage.setScene(scene);
         stage.show();
@@ -273,7 +271,7 @@ public class GuestStayInterface extends Application {
         vbox.getChildren().add(backButton);
         backButton.setOnAction(e -> stage.setScene(initialScene));
 
-        Scene scene = new Scene(vbox, 600, 400);
+        Scene scene = new Scene(vbox, 1000, 700);
         scene.getStylesheets().add(stylePath);
         stage.setScene(scene);
         stage.show();
@@ -289,6 +287,19 @@ public class GuestStayInterface extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10));
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col4 = new ColumnConstraints();
+
+        col1.setPercentWidth(25);
+        col2.setPercentWidth(25);
+        col3.setPercentWidth(25);
+        col4.setPercentWidth(25);
+
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
+
         return gridPane;
     }
 
@@ -297,6 +308,7 @@ public class GuestStayInterface extends Application {
         TextField textField = new TextField();
         gridPane.add(lbl, col * 2, row);
         gridPane.add(textField, col * 2 + 1, row);
+        GridPane.setHgrow(textField, Priority.ALWAYS);
         return textField;
     }
 

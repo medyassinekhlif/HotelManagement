@@ -16,7 +16,6 @@ public class CustomerServiceDAL {
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            // Set the parameters
             statement.setInt(1, customerService.getId());
             statement.setString(2, customerService.getFirstName());
             statement.setString(3, customerService.getLastName());
@@ -34,7 +33,6 @@ public class CustomerServiceDAL {
             statement.setString(15, customerService.getShift());
             statement.setString(16, customerService.getFeedbackReceived());
 
-            // Execute the update
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
 
@@ -105,7 +103,6 @@ public class CustomerServiceDAL {
             statement.setString(15, customerService.getFeedbackReceived());
             statement.setInt(16, customerService.getId());
 
-            // Execute the update
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
 

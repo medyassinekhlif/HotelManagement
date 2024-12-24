@@ -1,7 +1,6 @@
 package Staff.CustomerService;
 
 import Main.MainInterface;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,13 +21,11 @@ public class CustomerServiceInterface extends Application {
     public void start(Stage stage) {
         stage.setTitle("Customer Service Management System");
 
-        // Set the width and height of the stage
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1000);
+        stage.setHeight(700);
 
         VBox mainLayout = createMainLayout(stage);
 
-        // Set the same background as MainInterface
         setBackground(mainLayout);
 
         initialScene = new Scene(mainLayout);
@@ -75,14 +72,13 @@ public class CustomerServiceInterface extends Application {
         TextField departmentField = createTextField(gridPane, "Department:", 4, 1);
         TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 0);
         TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 1);
-        TextField customerSatisfactionScore = createTextField(gridPane, "CustomerService Skills:", 6, 0);
-        TextField languagesSpoken = createTextField(gridPane, "Certifications:", 6, 1);
-        TextField shift = createTextField(gridPane, "Work Location:", 7, 0);
-        TextField feedbackReceived = createTextField(gridPane, "Received Feedback:", 7, 1);
+        TextField customerSatisfactionScoreField = createTextField(gridPane, "Customer Satisfaction:", 6, 0);
+        TextField languagesSpokenField = createTextField(gridPane, "Languages Spoken:", 6, 1);
+        TextField shiftField = createTextField(gridPane, "Shift:", 7, 0);
+        TextField feedbackReceivedField = createTextField(gridPane, "Received Feedback:", 7, 1);
 
         Button backButton = new Button("Back");
         gridPane.add(backButton, 0, 12);
-
         Button submitButton = new Button("Submit");
         gridPane.add(submitButton, 1, 12);
 
@@ -103,11 +99,10 @@ public class CustomerServiceInterface extends Application {
                 customerService.setDepartment(departmentField.getText());
                 customerService.setJobTitle(jobTitleField.getText());
                 customerService.setWorkingHours(workingHoursField.getText());
-                customerService
-                        .setCustomerSatisfactionScore(new java.math.BigDecimal(customerSatisfactionScore.getText()));
-                customerService.setLanguagesSpoken(languagesSpoken.getText());
-                customerService.setShift(shift.getText());
-                customerService.setFeedbackReceived(feedbackReceived.getText());
+                customerService.setCustomerSatisfactionScore(new java.math.BigDecimal(customerSatisfactionScoreField.getText()));
+                customerService.setLanguagesSpoken(languagesSpokenField.getText());
+                customerService.setShift(shiftField.getText());
+                customerService.setFeedbackReceived(feedbackReceivedField.getText());
 
                 if (customerServiceDAL.insertCustomerService(customerService)) {
                     showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service added successfully.");
@@ -130,29 +125,26 @@ public class CustomerServiceInterface extends Application {
     private void updateCustomerService(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        Label idLabel = new Label("CustomerService ID:");
-        TextField idField = new TextField();
-        gridPane.add(idLabel, 0, 0);
-        gridPane.add(idField, 1, 0);
+        TextField idField = createTextField(gridPane, "ID:", 0, 0);
 
         Button fetchButton = new Button("Fetch Details");
-        gridPane.add(fetchButton, 2, 0);
+        gridPane.add(fetchButton, 3, 12);
 
-        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 0);
-        TextField lastNameField = createTextField(gridPane, "Last Name:", 0, 1);
-        TextField emailField = createTextField(gridPane, "Email:", 1, 0);
-        TextField phoneField = createTextField(gridPane, "Phone Number:", 1, 1);
-        TextField addressField = createTextField(gridPane, "Address:", 2, 0);
-        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 2, 1);
-        TextField salaryField = createTextField(gridPane, "Salary:", 3, 0);
-        TextField statusField = createTextField(gridPane, "Status:", 3, 1);
-        TextField departmentField = createTextField(gridPane, "Department:", 4, 0);
-        TextField jobTitleField = createTextField(gridPane, "Job Title:", 4, 1);
-        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 0);
-        TextField customerSatisfactionScoreField = createTextField(gridPane, "Customer Satisfaction Score:", 5, 1);
-        TextField languagesSpokenField = createTextField(gridPane, "Languages Spoken:", 6, 0);
-        TextField shiftField = createTextField(gridPane, "Shift:", 6, 1);
-        TextField feedbackReceivedField = createTextField(gridPane, "Received Feedback:", 7, 0);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 1, 0);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 1);
+        TextField emailField = createTextField(gridPane, "Email:", 2, 0);
+        TextField phoneField = createTextField(gridPane, "Phone Number:", 2, 1);
+        TextField addressField = createTextField(gridPane, "Address:", 3, 0);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 1);
+        TextField salaryField = createTextField(gridPane, "Salary:", 4, 0);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 1);
+        TextField departmentField = createTextField(gridPane, "Department:", 5, 0);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 1);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 6, 0);
+        TextField customerSatisfactionScoreField = createTextField(gridPane, "Customer Satisfaction:", 6, 1);
+        TextField languagesSpokenField = createTextField(gridPane, "Languages Spoken:", 7, 0);
+        TextField shiftField = createTextField(gridPane, "Shift:", 7, 1);
+        TextField feedbackReceivedField = createTextField(gridPane, "Received Feedback:", 8, 0);
 
         Button backButton = new Button("Back");
         gridPane.add(backButton, 0, 12);
@@ -220,9 +212,9 @@ public class CustomerServiceInterface extends Application {
                 customerService.setFeedbackReceived(feedbackReceived);
 
                 if (customerServiceDAL.updateCustomerService(customerService)) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "CustomerService updated successfully.");
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service updated successfully.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update CustomerService.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to update Customer Service.");
                 }
             }
         });
@@ -266,12 +258,12 @@ public class CustomerServiceInterface extends Application {
         viewAllButton.setOnAction(e -> {
             List<CustomerService> customerServices = customerServiceDAL.getAllCustomerServices();
             if (customerServices.isEmpty()) {
-                showAlert(Alert.AlertType.INFORMATION, "View All CustomerServices",
-                        "No CustomerService records found.");
+                showAlert(Alert.AlertType.INFORMATION, "View All Customer Services",
+                        "No Customer Service records found.");
             } else {
                 StringBuilder details = new StringBuilder();
                 customerServices.forEach(customerService -> details.append(customerService).append("\n"));
-                showAlert(Alert.AlertType.INFORMATION, "View All CustomerServices", details.toString());
+                showAlert(Alert.AlertType.INFORMATION, "View All Customer Services", details.toString());
             }
         });
 
@@ -292,7 +284,7 @@ public class CustomerServiceInterface extends Application {
         vbox.setPadding(new Insets(10));
         vbox.setAlignment(Pos.CENTER);
 
-        Label idLabel = new Label("Enter CustomerService ID:");
+        Label idLabel = new Label("Enter Customer Service ID:");
         TextField idField = new TextField();
         Button deleteButton = new Button("Delete");
 
@@ -301,9 +293,9 @@ public class CustomerServiceInterface extends Application {
         deleteButton.setOnAction(e -> {
             int id = Integer.parseInt(idField.getText());
             if (customerServiceDAL.deleteCustomerService(id)) {
-                showAlert(Alert.AlertType.INFORMATION, "Success", "CustomerService deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service deleted successfully.");
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete CustomerService.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete Customer Service.");
             }
         });
 
@@ -329,6 +321,19 @@ public class CustomerServiceInterface extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10));
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col4 = new ColumnConstraints();
+
+        col1.setPercentWidth(25);
+        col2.setPercentWidth(25);
+        col3.setPercentWidth(25);
+        col4.setPercentWidth(25);
+
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
+
         return gridPane;
     }
 
@@ -337,11 +342,12 @@ public class CustomerServiceInterface extends Application {
         TextField textField = new TextField();
         gridPane.add(lbl, col * 2, row);
         gridPane.add(textField, col * 2 + 1, row);
+        GridPane.setHgrow(textField, Priority.ALWAYS);
         return textField;
     }
 
     private void setBackground(Pane pane) {
-        Image backgroundImage = new Image("file:Resources/background.jpg");
+        Image backgroundImage = new Image("file:resources/background.jpg");
         BackgroundImage bgImage = new BackgroundImage(
                 backgroundImage,
                 BackgroundRepeat.NO_REPEAT,

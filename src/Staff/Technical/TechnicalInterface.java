@@ -1,7 +1,6 @@
 package Staff.Technical;
 
 import Main.MainInterface;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,15 +19,11 @@ public class TechnicalInterface extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Customer Service Management System");
-
-        // Set the width and height of the stage
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setTitle("Technical Management System");
+        stage.setWidth(1000);
+        stage.setHeight(700);
 
         VBox mainLayout = createMainLayout(stage);
-
-        // Set the same background as MainInterface
         setBackground(mainLayout);
 
         initialScene = new Scene(mainLayout);
@@ -41,12 +36,12 @@ public class TechnicalInterface extends Application {
         VBox mainLayout = new VBox(10);
         mainLayout.setPadding(new Insets(15));
 
-        Label title = new Label("Customer Service Management System");
+        Label title = new Label("Technical Management System");
 
-        Button addTechnicalButton = new Button("Add Customer Service");
-        Button viewTechnicalsButton = new Button("View Customer Services");
-        Button updateTechnicalButton = new Button("Update Customer Service");
-        Button deleteTechnicalButton = new Button("Delete Customer Service");
+        Button addTechnicalButton = new Button("Add Technical");
+        Button viewTechnicalsButton = new Button("View Technicals");
+        Button updateTechnicalButton = new Button("Update Technical");
+        Button deleteTechnicalButton = new Button("Delete Technical");
         Button backButton = new Button("Back");
 
         addTechnicalButton.setOnAction(e -> addTechnical(stage));
@@ -108,9 +103,9 @@ public class TechnicalInterface extends Application {
                 technical.setLastTrainingDate(java.sql.Date.valueOf(LastTrainingDateField.getText()));
 
                 if (technicalDAL.insertTechnical(technical)) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Customer Service added successfully.");
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Technical added successfully.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Customer Service.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add Technical.");
                 }
             } catch (Exception ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid input: " + ex.getMessage());
@@ -128,29 +123,26 @@ public class TechnicalInterface extends Application {
     private void updateTechnical(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        Label idLabel = new Label("Technical ID:");
-        TextField idField = new TextField();
-        gridPane.add(idLabel, 0, 0);
-        gridPane.add(idField, 1, 0);
+        TextField idField = createTextField(gridPane, "ID:", 0, 0);
 
         Button fetchButton = new Button("Fetch Details");
-        gridPane.add(fetchButton, 2, 0);
+        gridPane.add(fetchButton, 3, 12);
 
-        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 0);
-        TextField lastNameField = createTextField(gridPane, "Last Name:", 0, 1);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 1, 0);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 1);
         TextField emailField = createTextField(gridPane, "Email:", 2, 0);
         TextField phoneField = createTextField(gridPane, "Phone Number:", 2, 1);
-        TextField addressField = createTextField(gridPane, "Address:", 1, 0);
-        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 1, 1);
-        TextField salaryField = createTextField(gridPane, "Salary:", 2, 0);
-        TextField statusField = createTextField(gridPane, "Status:", 2, 1);
-        TextField departmentField = createTextField(gridPane, "Department:", 3, 0);
-        TextField jobTitleField = createTextField(gridPane, "Job Title:", 3, 1);
-        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 4, 0);
-        TextField technicalSkillsField = createTextField(gridPane, " Technical Skills:", 4, 1);
-        TextField certificationsField = createTextField(gridPane, "Certifications:", 5, 0);
-        TextField workLocationField = createTextField(gridPane, "work Location:", 5, 1);
-        TextField lastTrainingDateField = createTextField(gridPane, "Last Training Date:", 6, 0);
+        TextField addressField = createTextField(gridPane, "Address:", 3, 0);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 1);
+        TextField salaryField = createTextField(gridPane, "Salary:", 4, 0);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 1);
+        TextField departmentField = createTextField(gridPane, "Department:", 5, 0);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 1);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 6, 0);
+        TextField technicalSkillsField = createTextField(gridPane, " Technical Skills:", 6, 1);
+        TextField certificationsField = createTextField(gridPane, "Certifications:", 7, 0);
+        TextField workLocationField = createTextField(gridPane, "work Location:", 7, 1);
+        TextField lastTrainingDateField = createTextField(gridPane, "Last Training Date:", 8, 0);
 
         Button backButton = new Button("Back");
         gridPane.add(backButton, 0, 12);
@@ -177,7 +169,7 @@ public class TechnicalInterface extends Application {
                 workLocationField.setText(technical.getWorkLocation());
                 lastTrainingDateField.setText(technical.getLastTrainingDate().toString());
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID " + id);
+                showAlert(Alert.AlertType.ERROR, "Error", "No Technical found with ID " + id);
             }
         });
 
@@ -242,7 +234,7 @@ public class TechnicalInterface extends Application {
         vbox.setAlignment(Pos.CENTER);
 
         TextField idField = new TextField();
-        idField.setPromptText("Enter Customer Service ID");
+        idField.setPromptText("Enter Technical ID");
 
         Button viewByIdButton = new Button("View by ID");
         Button viewAllButton = new Button("View All");
@@ -253,9 +245,9 @@ public class TechnicalInterface extends Application {
                 int id = Integer.parseInt(idField.getText());
                 Technical technical = technicalDAL.getTechnicalById(id);
                 if (technical != null) {
-                    showAlert(Alert.AlertType.INFORMATION, "Customer Service Details", technical.toString());
+                    showAlert(Alert.AlertType.INFORMATION, "Technical Details", technical.toString());
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "No Customer Service found with ID: " + id);
+                    showAlert(Alert.AlertType.ERROR, "Error", "No Technical found with ID: " + id);
                 }
             } catch (NumberFormatException ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid ID format.");
@@ -328,6 +320,19 @@ public class TechnicalInterface extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10));
+    
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col4 = new ColumnConstraints();
+    
+        col1.setPercentWidth(25);
+        col2.setPercentWidth(25);
+        col3.setPercentWidth(25);
+        col4.setPercentWidth(25);
+    
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
+    
         return gridPane;
     }
 
@@ -336,6 +341,7 @@ public class TechnicalInterface extends Application {
         TextField textField = new TextField();
         gridPane.add(lbl, col * 2, row);
         gridPane.add(textField, col * 2 + 1, row);
+        GridPane.setHgrow(textField, Priority.ALWAYS);
         return textField;
     }
 

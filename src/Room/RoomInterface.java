@@ -22,8 +22,8 @@ public class RoomInterface extends Application {
     public void start(Stage stage) {
         stage.setTitle("Room Management System");
 
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1000);
+        stage.setHeight(700);
 
         VBox mainLayout = createMainLayout(stage);
 
@@ -67,10 +67,10 @@ public class RoomInterface extends Application {
         TextField roomImageField = createTextField(gridPane, "Room Image:", 1, 1);
 
         Button backButton = new Button("Back");
-        gridPane.add(backButton, 0, 3);
+        gridPane.add(backButton, 0, 4);
 
         Button submitButton = new Button("Submit");
-        gridPane.add(submitButton, 1, 3);
+        gridPane.add(submitButton, 1, 4);
 
         backButton.setOnAction(e -> stage.setScene(initialScene));
 
@@ -97,22 +97,19 @@ public class RoomInterface extends Application {
     private void updateRoom(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        Label roomTypeLabel = new Label("Room Type:");
-        TextField roomTypeField = new TextField();
-        gridPane.add(roomTypeLabel, 0, 0);
-        gridPane.add(roomTypeField, 1, 0);
+        TextField roomTypeField = createTextField(gridPane, "Room Type:", 0, 0);
 
         Button fetchButton = new Button("Fetch Details");
-        gridPane.add(fetchButton, 2, 0);
+        gridPane.add(fetchButton, 3, 4);
 
-        TextField numberOfRoomsField = createTextField(gridPane, "Number of Rooms:", 0, 1);
-        TextField pricePerNightField = createTextField(gridPane, "Price Per Night:", 1, 0);
-        TextField roomImageField = createTextField(gridPane, "Room Image:", 1, 1);
+        TextField numberOfRoomsField = createTextField(gridPane, "Number of Rooms:", 1, 0);
+        TextField pricePerNightField = createTextField(gridPane, "Price Per Night:", 1, 1);
+        TextField roomImageField = createTextField(gridPane, "Room Image:", 2, 0);
 
         Button backButton = new Button("Back");
-        gridPane.add(backButton, 0, 3);
+        gridPane.add(backButton, 0, 4);
         Button updateButton = new Button("Update");
-        gridPane.add(updateButton, 1, 3);
+        gridPane.add(updateButton, 1, 4);
 
         fetchButton.setOnAction(e -> {
             try {
@@ -248,6 +245,19 @@ public class RoomInterface extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10));
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col4 = new ColumnConstraints();
+
+        col1.setPercentWidth(25);
+        col2.setPercentWidth(25);
+        col3.setPercentWidth(25);
+        col4.setPercentWidth(25);
+
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
+
         return gridPane;
     }
 
@@ -256,6 +266,7 @@ public class RoomInterface extends Application {
         TextField textField = new TextField();
         gridPane.add(lbl, col * 2, row);
         gridPane.add(textField, col * 2 + 1, row);
+        GridPane.setHgrow(textField, Priority.ALWAYS);
         return textField;
     }
 
@@ -269,7 +280,7 @@ public class RoomInterface extends Application {
     }
 
     private void setBackground(Pane pane) {
-        Image backgroundImage = new Image("file:Resources/background.jpg");
+        Image backgroundImage = new Image("file:resources/background.jpg");
         BackgroundImage bgImage = new BackgroundImage(
                 backgroundImage,
                 BackgroundRepeat.NO_REPEAT,

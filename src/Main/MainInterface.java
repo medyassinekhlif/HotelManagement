@@ -123,8 +123,8 @@ public class MainInterface extends Application {
 
         mainStage.setScene(scene);
         mainStage.setTitle("Hotel Management System");
-        mainStage.setWidth(800);
-        mainStage.setHeight(600);
+        mainStage.setWidth(1000);
+        mainStage.setHeight(700);
         mainStage.setResizable(false);
         mainStage.show();
     }

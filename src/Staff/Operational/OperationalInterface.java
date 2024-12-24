@@ -1,7 +1,6 @@
 package Staff.Operational;
 
 import Main.MainInterface;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,13 +21,11 @@ public class OperationalInterface extends Application {
     public void start(Stage stage) {
         stage.setTitle("Operational Management System");
 
-        // Set the width and height of the stage
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1000);
+        stage.setHeight(700);
 
         VBox mainLayout = createMainLayout(stage);
 
-        // Set the same background as MainInterface
         setBackground(mainLayout);
 
         initialScene = new Scene(mainLayout);
@@ -106,7 +103,6 @@ public class OperationalInterface extends Application {
                 operational.setShiftType(shiftTypeField.getText());
                 operational.setLocation(locationField.getText());
                 operational.setResponsibilityLevel(responsibilityLevelField.getText());
-
                 operational.setTaskCount(Integer.parseInt(taskCountField.getText()));
                 operational.setPerformanceRating(new java.math.BigDecimal(performanceRatingField.getText()));
 
@@ -131,30 +127,27 @@ public class OperationalInterface extends Application {
     private void updateOperational(Stage stage) {
         GridPane gridPane = createFormPane();
 
-        Label idLabel = new Label("Operational ID:");
-        TextField idField = new TextField();
-        gridPane.add(idLabel, 0, 0);
-        gridPane.add(idField, 1, 0);
+        TextField idField = createTextField(gridPane, "ID:", 0, 0);
 
         Button fetchButton = new Button("Fetch Details");
-        gridPane.add(fetchButton, 2, 0);
+        gridPane.add(fetchButton, 3, 12);
 
-        TextField firstNameField = createTextField(gridPane, "First Name:", 0, 0);
-        TextField lastNameField = createTextField(gridPane, "Last Name:", 0, 1);
-        TextField emailField = createTextField(gridPane, "Email:", 1, 0);
-        TextField phoneField = createTextField(gridPane, "Phone Number:", 1, 1);
-        TextField addressField = createTextField(gridPane, "Address:", 2, 0);
-        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 2, 1);
-        TextField salaryField = createTextField(gridPane, "Salary:", 3, 0);
-        TextField statusField = createTextField(gridPane, "Status:", 3, 1);
-        TextField departmentField = createTextField(gridPane, "Department:", 4, 0);
-        TextField jobTitleField = createTextField(gridPane, "Job Title:", 4, 1);
-        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 5, 0);
-        TextField shiftTypeField = createTextField(gridPane, "Shit Type:", 5, 1);
-        TextField locationField = createTextField(gridPane, "Location:", 6, 0);
-        TextField responsibilityLevelField = createTextField(gridPane, "Responsibility Level:", 6, 1);
-        TextField taskCountField = createTextField(gridPane, "taskCount:", 7, 1);
-        TextField performanceRatingField = createTextField(gridPane, "Performance Rating:", 8, 0);
+        TextField firstNameField = createTextField(gridPane, "First Name:", 1, 0);
+        TextField lastNameField = createTextField(gridPane, "Last Name:", 1, 1);
+        TextField emailField = createTextField(gridPane, "Email:", 2, 0);
+        TextField phoneField = createTextField(gridPane, "Phone Number:", 2, 1);
+        TextField addressField = createTextField(gridPane, "Address:", 3, 0);
+        TextField hireDateField = createTextField(gridPane, "Hire Date (yyyy-mm-dd):", 3, 1);
+        TextField salaryField = createTextField(gridPane, "Salary:", 4, 0);
+        TextField statusField = createTextField(gridPane, "Status:", 4, 1);
+        TextField departmentField = createTextField(gridPane, "Department:", 5, 0);
+        TextField jobTitleField = createTextField(gridPane, "Job Title:", 5, 1);
+        TextField workingHoursField = createTextField(gridPane, "Working Hours:", 6, 0);
+        TextField shiftTypeField = createTextField(gridPane, "Shift Type:", 6, 1);
+        TextField locationField = createTextField(gridPane, "Location:", 7, 0);
+        TextField responsibilityLevelField = createTextField(gridPane, "Responsibility Level:", 7, 1);
+        TextField taskCountField = createTextField(gridPane, "Task Count:", 8, 0);
+        TextField performanceRatingField = createTextField(gridPane, "Performance Rating:", 8, 1);
 
         Button backButton = new Button("Back");
         gridPane.add(backButton, 0, 12);
@@ -179,7 +172,6 @@ public class OperationalInterface extends Application {
                 shiftTypeField.setText(operational.getShiftType());
                 locationField.setText(operational.getLocation());
                 responsibilityLevelField.setText(operational.getResponsibilityLevel());
-
                 taskCountField.setText(Integer.toString(operational.getTaskCount()));
                 performanceRatingField.setText(operational.getPerformanceRating().toString());
             } else {
@@ -335,6 +327,19 @@ public class OperationalInterface extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10));
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col4 = new ColumnConstraints();
+
+        col1.setPercentWidth(25);
+        col2.setPercentWidth(25);
+        col3.setPercentWidth(25);
+        col4.setPercentWidth(25);
+
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
+
         return gridPane;
     }
 
@@ -343,6 +348,7 @@ public class OperationalInterface extends Application {
         TextField textField = new TextField();
         gridPane.add(lbl, col * 2, row);
         gridPane.add(textField, col * 2 + 1, row);
+        GridPane.setHgrow(textField, Priority.ALWAYS);
         return textField;
     }
 

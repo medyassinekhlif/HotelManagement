@@ -32,6 +32,10 @@ Text {
     -fx-alignment: center;
 }
 
+.grid-pane {
+    -fx-fill-width: true;
+}
+
 Button {
     -fx-padding: 4px 12px;
     -fx-background-color: #0d58cf;
