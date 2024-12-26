@@ -86,6 +86,11 @@ java -cp ".;C:/mysql-connector-j-9.1.0/mysql-connector-j-9.1.0.jar;C:/javafx-sdk
 
 This will launch the `MainInterface` JavaFX application.
 
+
+## Setting up the Database
+After cloning the project, you need to create the SQL tables based on the attributes and table names in the DAL (Data Access Layer) files. The DAL files define the structure and relationships of the database tables.
+
+
 ## Troubleshooting
 
 - **Path Issues:** If you encounter problems with paths or dependencies, ensure the paths to JavaFX and MySQL Connector in the `launch.json` and `settings.json` files are correct.
@@ -101,11 +106,22 @@ easier for JavaFX development and to handle MySQL database connections.
 
 The Hotel Management Java desktop application offers efficient management of various hotel operations. The key features include:
 
-- **Staff Management:** Manage different categories of staff including managerial, customer service, technical, and operational staff. Each category supports CRUD operations (Create, Read, Update, Delete).
-- **Room Management:** Handle room details, availability status, and assignments.
-- **Booking Operations:** Manage guest stays, booking details, and real-time availability checks.
+- **Staff Management:** Manage various staff categories, including managerial, customer service, technical, and operational. Each category supports full CRUD operations (Create, Read, Update, Delete). The Staff class, providing general staff information, is extended by Managerial, CustomerService, Technical, and Operational classes to represent specific staff categories with additional attributes and behaviors.
 
-The application uses JavaFX for the admin interface and MySQL Workbench for robust database integration. Each class (Rooms, GuestStays, Staff) has a data access layer file that communicates with the SQL database and interface.
+- **Room Management:** Handle room details, availability status, and assignments.
+The application supports various room types, defined within the `RoomType` enumeration:
+
+| Room Type | Description                       |
+|-----------|-----------------------------------|
+| S1, S2    | Standard room for 1 or 2 people   |
+| D1, D2    | Deluxe room for 1 or 2 people     |
+| E1, E2    | Exclusive room for 1 or 2 people  |
+| F3, F4    | Family room for 3 or 4 people     |
+
+- **Booking Management:** Manage guest stays, booking details, and real-time availability checks.
+
+The application uses JavaFX for the admin interface and MySQL Workbench for robust database integration. Each class, such as Rooms, GuestStays, Technical, Operational, CustomerService, and Management, has an interface and a data access layer (DAL) file that communicates with the MySQL database through SQL queries.
+
 
 ### Screenshots and Interface
 
