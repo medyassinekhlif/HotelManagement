@@ -6,7 +6,6 @@ public class Room {
         S1, S2, D1, D2, E1, E2, F3, F4
     }
 
-
     private String roomImage;
     private double pricePerNight;
     private RoomType roomType;

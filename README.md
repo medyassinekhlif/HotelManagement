@@ -95,3 +95,4 @@ This will launch the `MainInterface` JavaFX application.
 
 - The `.vscode` files (`launch.json` and `settings.json`) have been manually set up to simplify the configuration for JavaFX development and handle MySQL database connections.
 - If you encounter any other issues, feel free to raise an issue on the [GitHub repository](https://github.com/MedYessinKhlif/HotelManagement.git).
+easier for JavaFX development and to handle MySQL database connections.
