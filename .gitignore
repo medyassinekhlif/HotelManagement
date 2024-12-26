@@ -1,5 +1,11 @@
 # Compiled class files
 *.class
+src/GuestStay/*.class
+src/Rooms/*.class
+src/Staff/CustomerService/*.class
+src/Staff/Managerial/*.class
+src/Staff/Operational/*.class
+src/Staff/Technical/*.class
 
 # Log files
 *.log

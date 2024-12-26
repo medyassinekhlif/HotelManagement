@@ -24,7 +24,7 @@ public class GuestStayInterface extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Customer Service Management System");
+        stage.setTitle("Guest Stay Management System");
 
         stage.setWidth(1000);
         stage.setHeight(700);
@@ -43,12 +43,12 @@ public class GuestStayInterface extends Application {
         VBox mainLayout = new VBox(10);
         mainLayout.setPadding(new Insets(15));
 
-        Label title = new Label("Customer Service Management System");
+        Label title = new Label("Guest Stay Management System");
 
-        Button addGuestStayButton = new Button("Add Customer Service");
-        Button viewGuestStaysButton = new Button("View Customer Services");
-        Button updateGuestStayButton = new Button("Update Customer Service");
-        Button deleteGuestStayButton = new Button("Delete Customer Service");
+        Button addGuestStayButton = new Button("Add Guest Stay");
+        Button viewGuestStaysButton = new Button("View Guest Stays");
+        Button updateGuestStayButton = new Button("Update Guest Stay");
+        Button deleteGuestStayButton = new Button("Delete Guest Stay");
         Button backButton = new Button("Back");
 
         addGuestStayButton.setOnAction(e -> addGuestStay(stage));

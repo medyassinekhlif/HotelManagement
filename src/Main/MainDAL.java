@@ -1,11 +1,13 @@
 package Main;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 import Utils.DbConnection;
 
 public class MainDAL {
 
-    // Method to get the number of rooms
+    // Method to get the total number of rooms
     public static int getNumberOfRooms() throws SQLException {
         String query = "SELECT SUM(numberOfRooms) AS totalRooms FROM rooms";
         try (Connection conn = DbConnection.getConnection(); 
@@ -16,6 +18,23 @@ public class MainDAL {
             }
         }
         return 0; // Return 0 if no rooms are found
+    }
+
+
+    // Method to get the number of rooms by room type
+    public static Map<String, Integer> getNumberOfRoomsByType() throws SQLException {
+        String query = "SELECT roomType, numberOfRooms FROM rooms";
+        Map<String, Integer> roomsByType = new HashMap<>();
+        try (Connection conn = DbConnection.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(query); 
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String roomType = rs.getString("roomType");
+                int numberOfRooms = rs.getInt("numberOfRooms");
+                roomsByType.put(roomType, numberOfRooms);
+            }
+        }
+        return roomsByType; // Return the map of room types and their respective number of rooms
     }
 
     // Method to get the number of guests

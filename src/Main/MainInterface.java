@@ -22,6 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class MainInterface extends Application {
 
@@ -39,35 +40,43 @@ public class MainInterface extends Application {
         root.setBackground(new Background(bgImage));
 
         GridPane mainMenu = new GridPane();
-        mainMenu.setVgap(15); 
-        mainMenu.setHgap(15); 
+        mainMenu.setVgap(15);
+        mainMenu.setHgap(15);
         mainMenu.setAlignment(Pos.CENTER);
         
         Text title = new Text("Hotel Management System");
         title.setId("title");
 
-
-        Text numberOfRoomsText = new Text();
-        Text numberOfGuestsText = new Text();
+        
         Text numberOfCustomerServiceText = new Text();
         Text numberOfOperationalText = new Text();
         Text numberOfManagerialText = new Text();
         Text numberOfTechnicalText = new Text();
+        Text numberOfGuestsText = new Text();
+        Text numberOfRoomsText = new Text();
 
         try {
-            int numberOfRooms = MainDAL.getNumberOfRooms();
-            int numberOfGuests = MainDAL.getNumberOfGuests();
             int numberOfCustomerService = MainDAL.getNumberOfCustomerServiceRecords();
             int numberOfOperational = MainDAL.getNumberOfOperationalRecords();
             int numberOfManagerial = MainDAL.getNumberOfManagerialRecords();
             int numberOfTechnical = MainDAL.getNumberOfTechnicalRecords();
-
-            numberOfRoomsText.setText("Total Rooms: " + numberOfRooms);
+            int numberOfGuests = MainDAL.getNumberOfGuests();
+            int totalNumberOfRooms = MainDAL.getNumberOfRooms();
+            Map<String, Integer> roomsByType = MainDAL.getNumberOfRoomsByType();
             numberOfGuestsText.setText("Total Guests: " + numberOfGuests);
+
+            StringBuilder roomsByTypeString = new StringBuilder("Total Rooms: " + totalNumberOfRooms + "\n");
+            for (Map.Entry<String, Integer> entry : roomsByType.entrySet()) {
+                roomsByTypeString.append(entry.getKey()).append(": ").append(entry.getValue()).append("  ");
+            }
+            numberOfRoomsText.setText(roomsByTypeString.toString().trim());
+
             numberOfCustomerServiceText.setText("Customer Service Staff: " + numberOfCustomerService);
             numberOfOperationalText.setText("Operational Staff: " + numberOfOperational);
             numberOfManagerialText.setText("Managerial Staff: " + numberOfManagerial);
-            numberOfTechnicalText.setText("Technical Staff: " + numberOfTechnical);
+            numberOfTechnicalText.setText("Technical Staff: " + numberOfTechnical);            
+            
+
         } catch (SQLException e) {
             numberOfRoomsText.setText("Error fetching room data.");
             numberOfGuestsText.setText("Error fetching guest data.");
@@ -101,20 +110,22 @@ public class MainInterface extends Application {
             mainStage.close();
         });
 
-        mainMenu.add(title, 0, 0, 2, 1); 
-        mainMenu.add(numberOfRoomsText, 0, 1);
-        mainMenu.add(numberOfGuestsText, 1, 1);
-        mainMenu.add(numberOfCustomerServiceText, 0, 2);
-        mainMenu.add(numberOfOperationalText, 1, 2);
-        mainMenu.add(numberOfManagerialText, 0, 3);
-        mainMenu.add(numberOfTechnicalText, 1, 3);
-        mainMenu.add(manageRoomsButton, 0, 4);
-        mainMenu.add(manageGuestStaysButton, 1, 4);
-        mainMenu.add(manageTechnicalStaffButton, 0, 5);
-        mainMenu.add(manageOperationalStaffButton, 1, 5);
-        mainMenu.add(manageManagerialStaffButton, 0, 6);
-        mainMenu.add(manageCustomerServiceStaffButton, 1, 6);
-        mainMenu.add(exitButton, 0, 7, 2, 1);
+        mainMenu.add(title, 0, 0, 2, 1);
+        mainMenu.add(numberOfRoomsText, 0, 1, 2, 1);
+        mainMenu.add(numberOfGuestsText, 0, 2);
+
+        mainMenu.add(numberOfCustomerServiceText, 1, 2);
+        mainMenu.add(numberOfOperationalText, 0, 3);
+        mainMenu.add(numberOfManagerialText, 1, 3);
+        mainMenu.add(numberOfTechnicalText, 0, 4);
+
+        mainMenu.add(manageRoomsButton, 0, 5);
+        mainMenu.add(manageGuestStaysButton, 1, 5);
+        mainMenu.add(manageTechnicalStaffButton, 0, 6);
+        mainMenu.add(manageOperationalStaffButton, 1, 6);
+        mainMenu.add(manageManagerialStaffButton, 0, 7);
+        mainMenu.add(manageCustomerServiceStaffButton, 1, 7);
+        mainMenu.add(exitButton, 0, 8, 2, 1);
 
         root.getChildren().add(mainMenu);
 
@@ -160,6 +171,6 @@ public class MainInterface extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args); 
+        launch(args);
     }
 }
