@@ -115,3 +115,4 @@ Below are placeholders for screenshots depicting various functionalities of the 
 |---------------------------------------------|---------------------------------------------|---------------------------------------------|---------------------------------------------|
 | ![Image Placeholder](src/ressources/5.png) | ![Image Placeholder](src/ressources/6.png) | ![Image Placeholder](src/ressources/7.png) | ![Image Placeholder](src/ressources/8.png) |
 | ![Image Placeholder](src/ressources/9.png) | ![Image Placeholder](src/ressources/10.png) | ![Image Placeholder](src/ressources/11.png) | ![Image Placeholder](src/ressources/12.png) |
+
