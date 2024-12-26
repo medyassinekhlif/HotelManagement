@@ -42,7 +42,7 @@ cd HotelManagement
 The `launch.json` file configures how the JavaFX application is launched. Ensure the path to the JavaFX SDK is correct. Update the following if necessary:
 
 ```json
-"vmArgs": "--module-path "C:/Users/YourUsername/Desktop/javafx-sdk-23.0.1/lib" --add-modules javafx.controls,javafx.fxml"
+"vmArgs": "--module-path \"C:/Users/YourUsername/Desktop/javafx-sdk-23.0.1/lib\" --add-modules javafx.controls,javafx.fxml"
 ```
 
 Ensure the path points to the location of your JavaFX SDK.
