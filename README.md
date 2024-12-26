@@ -96,6 +96,7 @@ This will launch the `MainInterface` JavaFX application.
 - The `.vscode` files (`launch.json` and `settings.json`) have been manually set up to simplify the configuration for JavaFX development and handle MySQL database connections.
 - If you encounter any other issues, feel free to raise an issue on the [GitHub repository](https://github.com/MedYessinKhlif/HotelManagement.git).
 easier for JavaFX development and to handle MySQL database connections.
+
 ## Application Functionalities
 
 The Hotel Management Java desktop application offers efficient management of various hotel operations. The key features include:
@@ -110,7 +111,7 @@ The application uses JavaFX for the admin interface and MySQL Workbench for robu
 
 Below are placeholders for screenshots depicting various functionalities of the application. You can add the source of each image manually.
 
-| ![Image Placeholder](src/Resources/1.jpg) | ![Image Placeholder](src/Resources/2.jpg) | ![Image Placeholder](src/Resources/3.jpg) | ![Image Placeholder](src/Resources/4.jpg) |
+| ![Image Placeholder](src/Resources/1.JPG) | ![Image Placeholder](src/Resources/2.JPG) | ![Image Placeholder](src/Resources/3.JPG) | ![Image Placeholder](src/Resources/4.JPG) |
 |---------------------------------------------|---------------------------------------------|---------------------------------------------|---------------------------------------------|
-| ![Image Placeholder](src/Resources/5.jpg) | ![Image Placeholder](src/Resources/6.jpg) | ![Image Placeholder](src/Resources/7.jpg) | ![Image Placeholder](src/Resources/8.jpg) |
-| ![Image Placeholder](src/Resources/9.jpg) | ![Image Placeholder](src/Resources/10.jpg) | ![Image Placeholder](src/Resources/11.jpg) | ![Image Placeholder](src/Resources/12.jpg) |
+| ![Image Placeholder](src/Resources/5.JPG) | ![Image Placeholder](src/Resources/6.JPG) | ![Image Placeholder](src/Resources/7.JPG) | ![Image Placeholder](src/Resources/8.JPG) |
+| ![Image Placeholder](src/Resources/9.JPG) | ![Image Placeholder](src/Resources/10.JPG) | ![Image Placeholder](src/Resources/11.JPG) | ![Image Placeholder](src/Resources/12.JPG) |
