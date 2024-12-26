@@ -111,8 +111,8 @@ The application uses JavaFX for the admin interface and MySQL Workbench for robu
 
 Below are placeholders for screenshots depicting various functionalities of the application. You can add the source of each image manually.
 
-| ![Image Placeholder](src/resources/1.JPG) | ![Image Placeholder](src/resources/2.JPG) | ![Image Placeholder](src/resources/3.JPG) | ![Image Placeholder](src/resources/4.JPG) |
+| ![Image Placeholder](src/Resources/1.JPG) | ![Image Placeholder](src/Resources/2.JPG) | ![Image Placeholder](src/Resources/3.JPG) | ![Image Placeholder](src/Resources/4.JPG) |
 |---------------------------------------------|---------------------------------------------|---------------------------------------------|---------------------------------------------|
-| ![Image Placeholder](src/resources/5.JPG) | ![Image Placeholder](src/resources/6.JPG) | ![Image Placeholder](src/resources/7.JPG) | ![Image Placeholder](src/resources/8.JPG) |
-| ![Image Placeholder](src/resources/9.JPG) | ![Image Placeholder](src/resources/10.JPG) | ![Image Placeholder](src/resources/11.JPG) | ![Image Placeholder](src/resources/12.JPG) |
+| ![Image Placeholder](src/Resources/5.JPG) | ![Image Placeholder](src/Resources/6.JPG) | ![Image Placeholder](src/Resources/7.JPG) | ![Image Placeholder](src/Resources/8.JPG) |
+| ![Image Placeholder](src/Resources/9.JPG) | ![Image Placeholder](src/Resources/10.JPG) | ![Image Placeholder](src/Resources/11.JPG) | ![Image Placeholder](src/Resources/12.JPG) |
 
