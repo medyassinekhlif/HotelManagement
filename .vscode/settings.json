@@ -4,7 +4,7 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",  
-        "C:/Users/dell store/Desktop/javafx-sdk-23.0.1/lib/*.jar"  
+        "C:/javafx-sdk-23.0.1/lib/*.jar"  
     ],
     "files.exclude": {
         "**/*.class": true
