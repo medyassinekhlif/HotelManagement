@@ -71,7 +71,7 @@ Ensure that the MySQL Connector/J (e.g., `mysql-connector-j-9.1.0.jar`) is inclu
 You can compile the project using the following command:
 
 ```bash
-javac -cp ".;C:/mysql-connector-j-9.1.0/mysql-connector-j-9.1.0.jar;C:/javafx-sdk-23.0.1/lib/*" --module-path "C://javafx-sdk-23.0.1/lib" --add-modules javafx.controls,javafx.fxml Main/MainInterface.java
+javac -cp ".;C:/mysql-connector-j-9.1.0/mysql-connector-j-9.1.0.jar;C:/javafx-sdk-23.0.1/lib/*" --module-path "C:/javafx-sdk-23.0.1/lib" --add-modules javafx.controls,javafx.fxml Main/MainInterface.java
 ```
 
 Ensure the paths for the JavaFX SDK and MySQL Connector/J are correct for your system.
