@@ -26,7 +26,7 @@ Before cloning the project, ensure that you have the following installed on your
 Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/MedYessinKhlif/HotelManagement.git
+git clone https://github.com/medyassinekhlif/HotelManagement.git
 cd HotelManagement
 ```
 
